@@ -12,33 +12,31 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.RightControl
 })
 
--- Nút bật/tắt UI
-local ToggleUI = Instance.new("ScreenGui")
-local Button = Instance.new("TextButton")
+--// NÚT BẬT/TẮT MENU
 
-ToggleUI.Name = "ToggleUI"
-ToggleUI.Parent = game.CoreGui
+local ToggleGui = Instance.new("ScreenGui")
+ToggleGui.Name = "ToggleGui"
+ToggleGui.Parent = game.CoreGui
 
-Button.Parent = ToggleUI
-Button.Size = UDim2.new(0, 50, 0, 50)
-Button.Position = UDim2.new(0, 15, 0.5, -25)
-Button.BackgroundColor3 = Color3.fromRGB(20,20,20)
-Button.Text = "UI"
-Button.TextColor3 = Color3.new(1,1,1)
-Button.TextScaled = true
-Button.BorderSizePixel = 0
-Button.Active = true
-Button.Draggable = true
+local ToggleButton = Instance.new("TextButton")
+ToggleButton.Parent = ToggleGui
+ToggleButton.Size = UDim2.new(0,50,0,50)
+ToggleButton.Position = UDim2.new(0,15,0.5,-25)
+ToggleButton.BackgroundColor3 = Color3.fromRGB(25,25,25)
+ToggleButton.Text = "☰"
+ToggleButton.TextColor3 = Color3.new(1,1,1)
+ToggleButton.TextScaled = true
+ToggleButton.BorderSizePixel = 0
+ToggleButton.Active = true
+ToggleButton.Draggable = true
 
-local UICorner = Instance.new("UICorner", Button)
-UICorner.CornerRadius = UDim.new(1,0)
+local Corner = Instance.new("UICorner")
+Corner.CornerRadius = UDim.new(1,0)
+Corner.Parent = ToggleButton
 
--- Toggle Fluent Window
 local Visible = true
 
-Button.MouseButton1Click:Connect(function()
+ToggleButton.MouseButton1Click:Connect(function()
     Visible = not Visible
-    
-    game:GetService("CoreGui").Fluent.Visible = Visible
-    -- Nếu lỗi thì đổi "Fluent" thành tên ScreenGui của bạn
+    Window.Root.Visible = Visible
 end)

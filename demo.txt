@@ -52,7 +52,7 @@ Stroke.Color = Color3.fromRGB(180, 180, 180)
 Stroke.Thickness = 2
 Stroke.Parent = Button
 
--- Chữ "UI" ở giữa nút
+-- Chữ "pdz" ở giữa nút
 local Label = Instance.new("TextLabel")
 Label.Size = UDim2.fromScale(1, 1)
 Label.BackgroundTransparency = 1
@@ -113,51 +113,6 @@ UserInputService.InputChanged:Connect(function(input)
             )
 
             Button.Position = UDim2.fromOffset(newX, newY)
-        end
-    end
-end)
-
--- ==================== LOGIC BẬT/TẮT UI ====================
-
-local uiVisible = true
-local isDragged = false
-local inputStartPos
-
-Button.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Touch or
-       input.UserInputType == Enum.UserInputType.MouseButton1 then
-        inputStartPos = input.Position
-        isDragged = false
-    end
-end)
-
-UserInputService.InputChanged:Connect(function(input)
-    if inputStartPos and (input.UserInputType == Enum.UserInputType.Touch or
-       input.UserInputType == Enum.UserInputType.MouseMovement) then
-        local dist = (input.Position - inputStartPos).Magnitude
-        if dist > 6 then
-            isDragged = true
-        end
-    end
-end)
-
-Button.InputEnded:Connect(function(input)
-    if (input.UserInputType == Enum.UserInputType.Touch or
-        input.UserInputType == Enum.UserInputType.MouseButton1) and not isDragged then
-
-        -- Toggle UI
-        uiVisible = not uiVisible
-        Window:SetVisible(uiVisible)
-
-        -- Hiệu ứng nút khi bật/tắt
-        if uiVisible then
-            Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-            Label.TextColor3 = Color3.fromRGB(30, 30, 30)
-            Label.Text = "UI"
-        else
-            Button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-            Label.TextColor3 = Color3.fromRGB(220, 220, 220)
-            Label.Text = "UI"
         end
     end
 end)

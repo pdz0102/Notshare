@@ -70,49 +70,89 @@ Padding.PaddingLeft = UDim.new(0, 8)
 Padding.PaddingRight = UDim.new(0, 8)
 Padding.Parent = Label
 
--- ==================== LOGIC KÉO NÚT ====================
+
+-- ====== KÉO NÚT ======
 
 local dragging = false
+local dragStartInput
 local dragStartPos
-local buttonStartPos
 
 Button.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Touch or
-       input.UserInputType == Enum.UserInputType.MouseButton1 then
+    if input.UserInputType == Enum.UserInputType.Touch
+    or input.UserInputType == Enum.UserInputType.MouseButton1 then
         dragging = true
-        dragStartPos = input.Position
-        buttonStartPos = Button.Position
+        dragStartInput = input.Position
+        dragStartPos = Button.Position
     end
 end)
 
 Button.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Touch or
-       input.UserInputType == Enum.UserInputType.MouseButton1 then
+    if input.UserInputType == Enum.UserInputType.Touch
+    or input.UserInputType == Enum.UserInputType.MouseButton1 then
         dragging = false
     end
 end)
 
 UserInputService.InputChanged:Connect(function(input)
     if dragging then
-        if input.UserInputType == Enum.UserInputType.Touch or
-           input.UserInputType == Enum.UserInputType.MouseMovement then
-
-            local delta = input.Position - dragStartPos
-            local screenSize = workspace.CurrentCamera.ViewportSize
-
-            -- Tính vị trí mới (giữ trong màn hình)
-            local newX = math.clamp(
-                buttonStartPos.X.Offset + delta.X,
-                0,
-                screenSize.X - 52
-            )
-            local newY = math.clamp(
-                buttonStartPos.Y.Offset + delta.Y,
-                0,
-                screenSize.Y - 52
-            )
-
+        if input.UserInputType == Enum.UserInputType.Touch
+        or input.UserInputType == Enum.UserInputType.MouseMovement then
+            local delta = input.Position - dragStartInput
+            local screen = workspace.CurrentCamera.ViewportSize
+            local newX = math.clamp(dragStartPos.X.Offset + delta.X, 0, screen.X - 52)
+            local newY = math.clamp(dragStartPos.Y.Offset + delta.Y, 0, screen.Y - 52)
             Button.Position = UDim2.fromOffset(newX, newY)
         end
     end
 end)
+
+-- ====== BẬT TẮT UI ======
+
+local uiVisible = true
+local movedDist = 0
+local inputStart
+
+Button.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Touch
+    or input.UserInputType == Enum.UserInputType.MouseButton1 then
+        inputStart = input.Position
+        movedDist = 0
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if inputStart and (input.UserInputType == Enum.UserInputType.Touch
+    or input.UserInputType == Enum.UserInputType.MouseMovement) then
+        movedDist = (input.Position - inputStart).Magnitude
+    end
+end)
+
+Button.InputEnded:Connect(function(input)
+    if (input.UserInputType == Enum.UserInputType.Touch
+    or input.UserInputType == Enum.UserInputType.MouseButton1)
+    and movedDist < 8 then
+
+        uiVisible = not uiVisible
+
+        -- Tìm GUI Fluent và ẩn/hiện
+        for _, gui in ipairs(PlayerGui:GetChildren()) do
+            if gui:IsA("ScreenGui") and gui.Name ~= "PDZToggleButton" then
+                gui.Enabled = uiVisible
+            end
+        end
+
+        if uiVisible then
+            Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            Label.TextColor3 = Color3.fromRGB(30, 30, 30)
+        else
+            Button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+            Label.TextColor3 = Color3.fromRGB(200, 200, 200)
+        end
+    end
+end)
+
+Fluent:Notify({
+    Title = "PDZ Hub",
+    Content = "Load xong! Nhấn nút tròn để bật/tắt UI",
+    Duration = 4
+})

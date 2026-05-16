@@ -2,7 +2,7 @@ local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
--- UI chính
+-- Tạo cửa sổ chính
 local Window = Fluent:CreateWindow({
     Title = "PDZ Hub",
     SubTitle = "not share",
@@ -13,80 +13,151 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.LeftControl
 })
 
--------------------------------------------------
--- NÚT TRÒN TOGGLE UI
--------------------------------------------------
+-- ==================== NÚT TOGGLE HÌNH TRÒN ====================
 
-local UIS = game:GetService("UserInputService")
 local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
 
-local Player = Players.LocalPlayer
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Parent = game.CoreGui
-ScreenGui.ResetOnSpawn = false
+-- Tạo ScreenGui chứa nút
+local ToggleGui = Instance.new("ScreenGui")
+ToggleGui.Name = "PDZToggleButton"
+ToggleGui.ResetOnSpawn = false
+ToggleGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ToggleGui.DisplayOrder = 999
+ToggleGui.Parent = PlayerGui
 
--- Nút tròn
-local ToggleButton = Instance.new("ImageButton")
-ToggleButton.Parent = ScreenGui
+-- Nút hình tròn màu trắng
+local Button = Instance.new("ImageButton")
+Button.Name = "ToggleBtn"
+Button.Size = UDim2.fromOffset(52, 52)
+Button.Position = UDim2.new(0, 20, 0.5, 0)
+Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Button.BorderSizePixel = 0
+Button.Image = ""
+Button.AutoButtonColor = false
+Button.Parent = ToggleGui
 
-ToggleButton.Size = UDim2.new(0, 60, 0, 60)
-ToggleButton.Position = UDim2.new(0, 20, 0, 200)
+-- Bo tròn nút
+local Corner = Instance.new("UICorner")
+Corner.CornerRadius = UDim.new(1, 0)
+Corner.Parent = Button
 
--- Avatar trắng
-ToggleButton.Image = "rbxassetid://3926305904"
-ToggleButton.ImageRectOffset = Vector2.new(124, 4)
-ToggleButton.ImageRectSize = Vector2.new(36, 36)
-
-ToggleButton.BackgroundColor3 = Color3.fromRGB(255,255,255)
-ToggleButton.BackgroundTransparency = 0
-ToggleButton.AutoButtonColor = true
-
--- Bo tròn
-local UICorner = Instance.new("UICorner")
-UICorner.CornerRadius = UDim.new(1,0)
-UICorner.Parent = ToggleButton
-
--- Viền đẹp
+-- Đổ bóng nhẹ
 local Stroke = Instance.new("UIStroke")
+Stroke.Color = Color3.fromRGB(180, 180, 180)
 Stroke.Thickness = 2
-Stroke.Color = Color3.fromRGB(200,200,200)
-Stroke.Parent = ToggleButton
+Stroke.Parent = Button
 
--------------------------------------------------
--- BẬT / TẮT UI
--------------------------------------------------
+-- Chữ "UI" ở giữa nút
+local Label = Instance.new("TextLabel")
+Label.Size = UDim2.fromScale(1, 1)
+Label.BackgroundTransparency = 1
+Label.Text = "UI"
+Label.TextColor3 = Color3.fromRGB(30, 30, 30)
+Label.TextScaled = true
+Label.Font = Enum.Font.GothamBold
+Label.Parent = Button
 
-local UIVisible = true
+-- Padding chữ cho đẹp
+local Padding = Instance.new("UIPadding")
+Padding.PaddingTop = UDim.new(0, 10)
+Padding.PaddingBottom = UDim.new(0, 10)
+Padding.PaddingLeft = UDim.new(0, 8)
+Padding.PaddingRight = UDim.new(0, 8)
+Padding.Parent = Label
 
-ToggleButton.MouseButton1Click:Connect(function()
-    UIVisible = not UIVisible
-    Window.Root.Visible = UIVisible
-end)
-
--------------------------------------------------
--- DRAG MOBILE + PC
--------------------------------------------------
+-- ==================== LOGIC KÉO NÚT ====================
 
 local dragging = false
-local dragInput
-local dragStart
-local startPos
+local dragStartPos
+local buttonStartPos
 
-local function update(input)
-    local delta = input.Position - dragStart
+Button.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Touch or
+       input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStartPos = input.Position
+        buttonStartPos = Button.Position
+    end
+end)
 
-    ToggleButton.Position = UDim2.new(
-        startPos.X.Scale,
-        startPos.X.Offset + delta.X,
-        startPos.Y.Scale,
-        startPos.Y.Offset + delta.Y
-    )
-end
+Button.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Touch or
+       input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
+    end
+end)
 
-ToggleButton.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum         
+UserInputService.InputChanged:Connect(function(input)
+    if dragging then
+        if input.UserInputType == Enum.UserInputType.Touch or
+           input.UserInputType == Enum.UserInputType.MouseMovement then
 
-                        
-                        
-                            
+            local delta = input.Position - dragStartPos
+            local screenSize = workspace.CurrentCamera.ViewportSize
+
+            -- Tính vị trí mới (giữ trong màn hình)
+            local newX = math.clamp(
+                buttonStartPos.X.Offset + delta.X,
+                0,
+                screenSize.X - 52
+            )
+            local newY = math.clamp(
+                buttonStartPos.Y.Offset + delta.Y,
+                0,
+                screenSize.Y - 52
+            )
+
+            Button.Position = UDim2.fromOffset(newX, newY)
+        end
+    end
+end)
+
+-- ==================== LOGIC BẬT/TẮT UI ====================
+
+local uiVisible = true
+local isDragged = false
+local inputStartPos
+
+Button.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Touch or
+       input.UserInputType == Enum.UserInputType.MouseButton1 then
+        inputStartPos = input.Position
+        isDragged = false
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if inputStartPos and (input.UserInputType == Enum.UserInputType.Touch or
+       input.UserInputType == Enum.UserInputType.MouseMovement) then
+        local dist = (input.Position - inputStartPos).Magnitude
+        if dist > 6 then
+            isDragged = true
+        end
+    end
+end)
+
+Button.InputEnded:Connect(function(input)
+    if (input.UserInputType == Enum.UserInputType.Touch or
+        input.UserInputType == Enum.UserInputType.MouseButton1) and not isDragged then
+
+        -- Toggle UI
+        uiVisible = not uiVisible
+        Window:SetVisible(uiVisible)
+
+        -- Hiệu ứng nút khi bật/tắt
+        if uiVisible then
+            Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            Label.TextColor3 = Color3.fromRGB(30, 30, 30)
+            Label.Text = "UI"
+        else
+            Button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+            Label.TextColor3 = Color3.fromRGB(220, 220, 220)
+            Label.Text = "UI"
+        end
+    end
+end)

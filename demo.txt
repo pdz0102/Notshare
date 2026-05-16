@@ -2,7 +2,6 @@ local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
--- Tạo cửa sổ chính
 local Window = Fluent:CreateWindow({
     Title = "PDZ Hub",
     SubTitle = "not share",
@@ -10,154 +9,154 @@ local Window = Fluent:CreateWindow({
     Size = UDim2.fromOffset(400, 309),
     Acrylic = true,
     Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.LeftControl
+    MinimizeKey = Enum.KeyCode.RightControl
 })
 
--- ==================== NÚT TOGGLE HÌNH TRÒN ====================
+-- ========================================
+-- TÌM GUI CỦA FLUENT (nằm trong CoreGui)
+-- ========================================
+local FluentGui = nil
+task.spawn(function()
+    task.wait(1) -- chờ Fluent khởi tạo xong
+    local CoreGui = game:GetService("CoreGui")
+    -- Fluent thường tạo ScreenGui tên "Fluent" trong CoreGui
+    FluentGui = CoreGui:FindFirstChild("Fluent")
+    -- Nếu không thấy thì tìm bằng cách duyệt
+    if not FluentGui then
+        for _, v in ipairs(CoreGui:GetChildren()) do
+            if v:IsA("ScreenGui") then
+                FluentGui = v
+                break
+            end
+        end
+    end
+end)
 
+-- ========================================
+-- NÚT TRÒN TRẮNG DI CHUYỂN ĐƯỢC
+-- ========================================
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
+local PlayerGui = Players.LocalPlayer:WaitForChild("PlayerGui")
 
-local LocalPlayer = Players.LocalPlayer
-local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
-
--- Tạo ScreenGui chứa nút
 local ToggleGui = Instance.new("ScreenGui")
 ToggleGui.Name = "PDZToggleButton"
 ToggleGui.ResetOnSpawn = false
-ToggleGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-ToggleGui.DisplayOrder = 999
+ToggleGui.DisplayOrder = 999999
+ToggleGui.IgnoreGuiInset = true
 ToggleGui.Parent = PlayerGui
 
--- Nút hình tròn màu trắng
 local Button = Instance.new("ImageButton")
-Button.Name = "ToggleBtn"
-Button.Size = UDim2.fromOffset(52, 52)
-Button.Position = UDim2.new(0, 20, 0.5, 0)
+Button.Size = UDim2.fromOffset(56, 56)
+Button.Position = UDim2.fromOffset(20, 300)
 Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Button.BorderSizePixel = 0
-Button.Image = ""
 Button.AutoButtonColor = false
+Button.ZIndex = 10
 Button.Parent = ToggleGui
 
--- Bo tròn nút
-local Corner = Instance.new("UICorner")
-Corner.CornerRadius = UDim.new(1, 0)
-Corner.Parent = Button
+Instance.new("UICorner", Button).CornerRadius = UDim.new(1, 0)
 
--- Đổ bóng nhẹ
-local Stroke = Instance.new("UIStroke")
-Stroke.Color = Color3.fromRGB(180, 180, 180)
+local Stroke = Instance.new("UIStroke", Button)
+Stroke.Color = Color3.fromRGB(160, 160, 160)
 Stroke.Thickness = 2
-Stroke.Parent = Button
 
--- Chữ "UI" ở giữa nút
-local Label = Instance.new("TextLabel")
+local Label = Instance.new("TextLabel", Button)
 Label.Size = UDim2.fromScale(1, 1)
 Label.BackgroundTransparency = 1
 Label.Text = "UI"
-Label.TextColor3 = Color3.fromRGB(30, 30, 30)
+Label.TextColor3 = Color3.fromRGB(20, 20, 20)
 Label.TextScaled = true
 Label.Font = Enum.Font.GothamBold
-Label.Parent = Button
+Label.ZIndex = 11
 
--- Padding chữ cho đẹp
-local Padding = Instance.new("UIPadding")
-Padding.PaddingTop = UDim.new(0, 10)
-Padding.PaddingBottom = UDim.new(0, 10)
-Padding.PaddingLeft = UDim.new(0, 8)
-Padding.PaddingRight = UDim.new(0, 8)
-Padding.Parent = Label
-
--- ==================== LOGIC KÉO NÚT ====================
-
+-- ========================================
+-- LOGIC KÉO NÚT
+-- ========================================
 local dragging = false
-local dragStartPos
-local buttonStartPos
+local dragStartInput = nil
+local dragStartPos = nil
+local totalDrag = 0
 
 Button.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Touch or
-       input.UserInputType == Enum.UserInputType.MouseButton1 then
+    if input.UserInputType == Enum.UserInputType.Touch
+    or input.UserInputType == Enum.UserInputType.MouseButton1 then
         dragging = true
-        dragStartPos = input.Position
-        buttonStartPos = Button.Position
+        totalDrag = 0
+        dragStartInput = input.Position
+        dragStartPos = Button.Position
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if not dragging then return end
+    if input.UserInputType == Enum.UserInputType.Touch
+    or input.UserInputType == Enum.UserInputType.MouseMovement then
+        local delta = input.Position - dragStartInput
+        totalDrag = delta.Magnitude
+        local screen = workspace.CurrentCamera.ViewportSize
+        local newX = math.clamp(dragStartPos.X.Offset + delta.X, 0, screen.X - 56)
+        local newY = math.clamp(dragStartPos.Y.Offset + delta.Y, 0, screen.Y - 56)
+        Button.Position = UDim2.fromOffset(newX, newY)
     end
 end)
 
 Button.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Touch or
-       input.UserInputType == Enum.UserInputType.MouseButton1 then
+    if input.UserInputType == Enum.UserInputType.Touch
+    or input.UserInputType == Enum.UserInputType.MouseButton1 then
         dragging = false
     end
 end)
 
-UserInputService.InputChanged:Connect(function(input)
-    if dragging then
-        if input.UserInputType == Enum.UserInputType.Touch or
-           input.UserInputType == Enum.UserInputType.MouseMovement then
-
-            local delta = input.Position - dragStartPos
-            local screenSize = workspace.CurrentCamera.ViewportSize
-
-            -- Tính vị trí mới (giữ trong màn hình)
-            local newX = math.clamp(
-                buttonStartPos.X.Offset + delta.X,
-                0,
-                screenSize.X - 52
-            )
-            local newY = math.clamp(
-                buttonStartPos.Y.Offset + delta.Y,
-                0,
-                screenSize.Y - 52
-            )
-
-            Button.Position = UDim2.fromOffset(newX, newY)
-        end
-    end
-end)
-
--- ==================== LOGIC BẬT/TẮT UI ====================
-
+-- ========================================
+-- LOGIC BẬT / TẮT UI
+-- ========================================
 local uiVisible = true
-local isDragged = false
-local inputStartPos
 
-Button.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Touch or
-       input.UserInputType == Enum.UserInputType.MouseButton1 then
-        inputStartPos = input.Position
-        isDragged = false
-    end
-end)
+Button.MouseButton1Click:Connect(function()
+    -- Chỉ toggle nếu không kéo (kéo < 10px)
+    if totalDrag > 10 then return end
 
-UserInputService.InputChanged:Connect(function(input)
-    if inputStartPos and (input.UserInputType == Enum.UserInputType.Touch or
-       input.UserInputType == Enum.UserInputType.MouseMovement) then
-        local dist = (input.Position - inputStartPos).Magnitude
-        if dist > 6 then
-            isDragged = true
+    uiVisible = not uiVisible
+
+    -- Cách 1: dùng FluentGui nếu tìm thấy
+    if FluentGui then
+        FluentGui.Enabled = uiVisible
+    else
+        -- Cách 2: tắt tất cả ScreenGui trong CoreGui (trừ nút của mình)
+        local ok, CoreGui = pcall(function() return game:GetService("CoreGui") end)
+        if ok then
+            for _, gui in ipairs(CoreGui:GetChildren()) do
+                if gui:IsA("ScreenGui") then
+                    gui.Enabled = uiVisible
+                end
+            end
+        end
+        -- Cách 3: tắt trong PlayerGui (backup)
+        for _, gui in ipairs(PlayerGui:GetChildren()) do
+            if gui:IsA("ScreenGui") and gui.Name ~= "PDZToggleButton" then
+                gui.Enabled = uiVisible
+            end
         end
     end
-end)
 
-Button.InputEnded:Connect(function(input)
-    if (input.UserInputType == Enum.UserInputType.Touch or
-        input.UserInputType == Enum.UserInputType.MouseButton1) and not isDragged then
-
-        -- Toggle UI
-        uiVisible = not uiVisible
-        Window:SetVisible(uiVisible)
-
-        -- Hiệu ứng nút khi bật/tắt
-        if uiVisible then
-            Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-            Label.TextColor3 = Color3.fromRGB(30, 30, 30)
-            Label.Text = "UI"
-        else
-            Button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-            Label.TextColor3 = Color3.fromRGB(220, 220, 220)
-            Label.Text = "UI"
-        end
+    -- Đổi màu nút theo trạng thái
+    if uiVisible then
+        Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        Label.TextColor3 = Color3.fromRGB(20, 20, 20)
+        Label.Text = "UI"
+    else
+        Button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+        Label.TextColor3 = Color3.fromRGB(210, 210, 210)
+        Label.Text = "UI"
     end
 end)
+
+-- ========================================
+-- THÔNG BÁO
+-- ========================================
+Fluent:Notify({
+    Title = "PDZ Hub",
+    Content = "Load xong! Nhấn nút tròn trắng để bật/tắt UI.",
+    Duration = 4
+})

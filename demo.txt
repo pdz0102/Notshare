@@ -12,178 +12,100 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.RightControl
 })
 
--- ========================================
--- LẤY FRAME CHÍNH CỦA FLUENT
--- Fluent lưu GUI trong Window.GUI hoặc Window.Gui
--- ========================================
-task.wait(0.5)
+--========================
+-- Toggle Button
+--========================
 
-local FluentFrame = nil
+local toggle = Instance.new("TextButton")
+toggle.Parent = gui
+toggle.Size = UDim2.new(0,50,0,50)
+toggle.Position = UDim2.new(0,20,0.5,-25)
+toggle.BackgroundColor3 = Color3.fromRGB(20,20,20)
+toggle.Text = "≡"
+toggle.TextScaled = true
+toggle.TextColor3 = Color3.new(1,1,1)
+toggle.BorderSizePixel = 0
+toggle.Active = true
+toggle.Draggable = true
 
--- Thử lấy trực tiếp từ Window object
-if Window.Gui then
-    FluentFrame = Window.Gui
-elseif Window.GUI then
-    FluentFrame = Window.GUI
-elseif Window.Main then
-    FluentFrame = Window.Main
+local corner1 = Instance.new("UICorner", toggle)
+corner1.CornerRadius = UDim.new(1,0)
+
+--========================
+-- Main UI
+--========================
+
+local main = Instance.new("Frame")
+main.Parent = gui
+main.Size = UDim2.new(0,350,0,220)
+main.Position = UDim2.new(0.5,-175,0.5,-110)
+main.BackgroundColor3 = Color3.fromRGB(25,25,25)
+main.Visible = true
+main.Active = true
+main.Draggable = true
+
+local corner2 = Instance.new("UICorner", main)
+corner2.CornerRadius = UDim.new(0,12)
+
+-- Top Bar
+local top = Instance.new("Frame")
+top.Parent = main
+top.Size = UDim2.new(1,0,0,35)
+top.BackgroundColor3 = Color3.fromRGB(15,15,15)
+top.BorderSizePixel = 0
+
+local title = Instance.new("TextLabel")
+title.Parent = top
+title.Size = UDim2.new(1,0,1,0)
+title.BackgroundTransparency = 1
+title.Text = "Kasumi"
+title.TextColor3 = Color3.new(1,1,1)
+title.Font = Enum.Font.GothamBold
+title.TextScaled = true
+
+--========================
+-- Tab Container
+--========================
+
+local tabFrame = Instance.new("Frame")
+tabFrame.Parent = main
+tabFrame.Position = UDim2.new(0,10,0,45)
+tabFrame.Size = UDim2.new(1,-20,1,-55)
+tabFrame.BackgroundTransparency = 1
+
+local UIList = Instance.new("UIListLayout")
+UIList.Parent = tabFrame
+UIList.Padding = UDim.new(0,10)
+
+-- Example Button
+local function CreateButton(txt)
+	local b = Instance.new("TextButton")
+	b.Parent = tabFrame
+	b.Size = UDim2.new(1,0,0,40)
+	b.BackgroundColor3 = Color3.fromRGB(35,35,35)
+	b.Text = txt
+	b.TextColor3 = Color3.new(1,1,1)
+	b.Font = Enum.Font.Gotham
+	b.TextScaled = true
+	b.BorderSizePixel = 0
+	
+	local c = Instance.new("UICorner", b)
+	c.CornerRadius = UDim.new(0,8)
+
+	return b
 end
 
--- Nếu vẫn không có, duyệt toàn bộ để tìm
-if not FluentFrame then
-    for _, v in pairs(getgc(true)) do
-        if type(v) == "table" then
-            if v.Gui and typeof(v.Gui) == "Instance" then
-                FluentFrame = v.Gui
-                break
-            end
-        end
-    end
-end
+local tab1 = CreateButton("Tab")
+local tab2 = CreateButton("Settings")
+local tab3 = CreateButton("Executor")
 
--- Backup cuối: tìm trong tất cả service
-if not FluentFrame then
-    local services = {
-        game:GetService("CoreGui"),
-        game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
-    }
-    for _, svc in ipairs(services) do
-        local ok, children = pcall(function() return svc:GetChildren() end)
-        if ok then
-            for _, gui in ipairs(children) do
-                if gui:IsA("ScreenGui") then
-                    FluentFrame = gui
-                    break
-                end
-            end
-        end
-        if FluentFrame then break end
-    end
-end
+--========================
+-- Toggle Logic
+--========================
 
--- ========================================
--- NÚT TRÒN TRẮNG
--- ========================================
-local Players = game:GetService("Players")
-local UserInputService = game:GetService("UserInputService")
-local PlayerGui = Players.LocalPlayer:WaitForChild("PlayerGui")
+local opened = true
 
-local ToggleGui = Instance.new("ScreenGui")
-ToggleGui.Name = "PDZToggleButton"
-ToggleGui.ResetOnSpawn = false
-ToggleGui.DisplayOrder = 999999
-ToggleGui.IgnoreGuiInset = true
-ToggleGui.Parent = PlayerGui
-
-local Button = Instance.new("ImageButton")
-Button.Size = UDim2.fromOffset(56, 56)
-Button.Position = UDim2.fromOffset(20, 300)
-Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Button.BorderSizePixel = 0
-Button.AutoButtonColor = false
-Button.ZIndex = 10
-Button.Parent = ToggleGui
-
-Instance.new("UICorner", Button).CornerRadius = UDim.new(1, 0)
-
-local Stroke = Instance.new("UIStroke", Button)
-Stroke.Color = Color3.fromRGB(160, 160, 160)
-Stroke.Thickness = 2
-
-local Label = Instance.new("TextLabel", Button)
-Label.Size = UDim2.fromScale(1, 1)
-Label.BackgroundTransparency = 1
-Label.Text = "UI"
-Label.TextColor3 = Color3.fromRGB(20, 20, 20)
-Label.TextScaled = true
-Label.Font = Enum.Font.GothamBold
-Label.ZIndex = 11
-
--- ========================================
--- KÉO NÚT
--- ========================================
-local dragging = false
-local dragStartInput = nil
-local dragStartPos = nil
-local totalDrag = 0
-
-Button.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Touch
-    or input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging = true
-        totalDrag = 0
-        dragStartInput = input.Position
-        dragStartPos = Button.Position
-    end
+toggle.MouseButton1Click:Connect(function()
+	opened = not opened
+	main.Visible = opened
 end)
-
-UserInputService.InputChanged:Connect(function(input)
-    if not dragging then return end
-    if input.UserInputType == Enum.UserInputType.Touch
-    or input.UserInputType == Enum.UserInputType.MouseMovement then
-        local delta = input.Position - dragStartInput
-        totalDrag = delta.Magnitude
-        local screen = workspace.CurrentCamera.ViewportSize
-        Button.Position = UDim2.fromOffset(
-            math.clamp(dragStartPos.X.Offset + delta.X, 0, screen.X - 56),
-            math.clamp(dragStartPos.Y.Offset + delta.Y, 0, screen.Y - 56)
-        )
-    end
-end)
-
-Button.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Touch
-    or input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging = false
-    end
-end)
-
--- ========================================
--- BẬT / TẮT UI
--- ========================================
-local uiVisible = true
-
-Button.InputEnded:Connect(function(input)
-    if (input.UserInputType == Enum.UserInputType.Touch
-    or input.UserInputType == Enum.UserInputType.MouseButton1)
-    and totalDrag < 10 then
-
-        uiVisible = not uiVisible
-
-        if FluentFrame then
-            -- Ẩn/hiện ScreenGui của Fluent
-            if FluentFrame:IsA("ScreenGui") then
-                FluentFrame.Enabled = uiVisible
-            else
-                -- Nếu là Frame thì dùng Visible
-                FluentFrame.Visible = uiVisible
-            end
-        else
-            -- Không tìm thấy FluentFrame → dùng MinimizeKey giả lập
-            -- Fluent có hàm Toggle nội bộ
-            if Window.MinimizeFrame then
-                Window.MinimizeFrame.Visible = uiVisible
-            end
-            -- Tắt tất cả ScreenGui không phải nút của mình
-            for _, gui in ipairs(PlayerGui:GetChildren()) do
-                if gui:IsA("ScreenGui") and gui.Name ~= "PDZToggleButton" then
-                    gui.Enabled = uiVisible
-                end
-            end
-        end
-
-        if uiVisible then
-            Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-            Label.TextColor3 = Color3.fromRGB(20, 20, 20)
-        else
-            Button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-            Label.TextColor3 = Color3.fromRGB(210, 210, 210)
-        end
-    end
-end)
-
-Fluent:Notify({
-    Title = "PDZ Hub",
-    Content = "Load xong!.",
-    Duration = 4
-})

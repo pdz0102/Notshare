@@ -13,27 +13,56 @@ local Window = Fluent:CreateWindow({
 })
 
 -- ========================================
--- TÌM GUI CỦA FLUENT (nằm trong CoreGui)
+-- LẤY FRAME CHÍNH CỦA FLUENT
+-- Fluent lưu GUI trong Window.GUI hoặc Window.Gui
 -- ========================================
-local FluentGui = nil
-task.spawn(function()
-    task.wait(1) -- chờ Fluent khởi tạo xong
-    local CoreGui = game:GetService("CoreGui")
-    -- Fluent thường tạo ScreenGui tên "Fluent" trong CoreGui
-    FluentGui = CoreGui:FindFirstChild("Fluent")
-    -- Nếu không thấy thì tìm bằng cách duyệt
-    if not FluentGui then
-        for _, v in ipairs(CoreGui:GetChildren()) do
-            if v:IsA("ScreenGui") then
-                FluentGui = v
+task.wait(0.5)
+
+local FluentFrame = nil
+
+-- Thử lấy trực tiếp từ Window object
+if Window.Gui then
+    FluentFrame = Window.Gui
+elseif Window.GUI then
+    FluentFrame = Window.GUI
+elseif Window.Main then
+    FluentFrame = Window.Main
+end
+
+-- Nếu vẫn không có, duyệt toàn bộ để tìm
+if not FluentFrame then
+    for _, v in pairs(getgc(true)) do
+        if type(v) == "table" then
+            if v.Gui and typeof(v.Gui) == "Instance" then
+                FluentFrame = v.Gui
                 break
             end
         end
     end
-end)
+end
+
+-- Backup cuối: tìm trong tất cả service
+if not FluentFrame then
+    local services = {
+        game:GetService("CoreGui"),
+        game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+    }
+    for _, svc in ipairs(services) do
+        local ok, children = pcall(function() return svc:GetChildren() end)
+        if ok then
+            for _, gui in ipairs(children) do
+                if gui:IsA("ScreenGui") then
+                    FluentFrame = gui
+                    break
+                end
+            end
+        end
+        if FluentFrame then break end
+    end
+end
 
 -- ========================================
--- NÚT TRÒN TRẮNG DI CHUYỂN ĐƯỢC
+-- NÚT TRÒN TRẮNG
 -- ========================================
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
@@ -71,7 +100,7 @@ Label.Font = Enum.Font.GothamBold
 Label.ZIndex = 11
 
 -- ========================================
--- LOGIC KÉO NÚT
+-- KÉO NÚT
 -- ========================================
 local dragging = false
 local dragStartInput = nil
@@ -95,9 +124,10 @@ UserInputService.InputChanged:Connect(function(input)
         local delta = input.Position - dragStartInput
         totalDrag = delta.Magnitude
         local screen = workspace.CurrentCamera.ViewportSize
-        local newX = math.clamp(dragStartPos.X.Offset + delta.X, 0, screen.X - 56)
-        local newY = math.clamp(dragStartPos.Y.Offset + delta.Y, 0, screen.Y - 56)
-        Button.Position = UDim2.fromOffset(newX, newY)
+        Button.Position = UDim2.fromOffset(
+            math.clamp(dragStartPos.X.Offset + delta.X, 0, screen.X - 56),
+            math.clamp(dragStartPos.Y.Offset + delta.Y, 0, screen.Y - 56)
+        )
     end
 end)
 
@@ -109,54 +139,51 @@ Button.InputEnded:Connect(function(input)
 end)
 
 -- ========================================
--- LOGIC BẬT / TẮT UI
+-- BẬT / TẮT UI
 -- ========================================
 local uiVisible = true
 
-Button.MouseButton1Click:Connect(function()
-    -- Chỉ toggle nếu không kéo (kéo < 10px)
-    if totalDrag > 10 then return end
+Button.InputEnded:Connect(function(input)
+    if (input.UserInputType == Enum.UserInputType.Touch
+    or input.UserInputType == Enum.UserInputType.MouseButton1)
+    and totalDrag < 10 then
 
-    uiVisible = not uiVisible
+        uiVisible = not uiVisible
 
-    -- Cách 1: dùng FluentGui nếu tìm thấy
-    if FluentGui then
-        FluentGui.Enabled = uiVisible
-    else
-        -- Cách 2: tắt tất cả ScreenGui trong CoreGui (trừ nút của mình)
-        local ok, CoreGui = pcall(function() return game:GetService("CoreGui") end)
-        if ok then
-            for _, gui in ipairs(CoreGui:GetChildren()) do
-                if gui:IsA("ScreenGui") then
+        if FluentFrame then
+            -- Ẩn/hiện ScreenGui của Fluent
+            if FluentFrame:IsA("ScreenGui") then
+                FluentFrame.Enabled = uiVisible
+            else
+                -- Nếu là Frame thì dùng Visible
+                FluentFrame.Visible = uiVisible
+            end
+        else
+            -- Không tìm thấy FluentFrame → dùng MinimizeKey giả lập
+            -- Fluent có hàm Toggle nội bộ
+            if Window.MinimizeFrame then
+                Window.MinimizeFrame.Visible = uiVisible
+            end
+            -- Tắt tất cả ScreenGui không phải nút của mình
+            for _, gui in ipairs(PlayerGui:GetChildren()) do
+                if gui:IsA("ScreenGui") and gui.Name ~= "PDZToggleButton" then
                     gui.Enabled = uiVisible
                 end
             end
         end
-        -- Cách 3: tắt trong PlayerGui (backup)
-        for _, gui in ipairs(PlayerGui:GetChildren()) do
-            if gui:IsA("ScreenGui") and gui.Name ~= "PDZToggleButton" then
-                gui.Enabled = uiVisible
-            end
-        end
-    end
 
-    -- Đổi màu nút theo trạng thái
-    if uiVisible then
-        Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Label.TextColor3 = Color3.fromRGB(20, 20, 20)
-        Label.Text = "UI"
-    else
-        Button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-        Label.TextColor3 = Color3.fromRGB(210, 210, 210)
-        Label.Text = "UI"
+        if uiVisible then
+            Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            Label.TextColor3 = Color3.fromRGB(20, 20, 20)
+        else
+            Button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+            Label.TextColor3 = Color3.fromRGB(210, 210, 210)
+        end
     end
 end)
 
--- ========================================
--- THÔNG BÁO
--- ========================================
 Fluent:Notify({
     Title = "PDZ Hub",
-    Content = "Load xong! Nhấn nút tròn trắng để bật/tắt UI.",
+    Content = "Load xong!.",
     Duration = 4
 })

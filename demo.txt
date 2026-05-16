@@ -12,100 +12,33 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.RightControl
 })
 
---========================
--- Toggle Button
---========================
+-- Nút bật/tắt UI
+local ToggleUI = Instance.new("ScreenGui")
+local Button = Instance.new("TextButton")
 
-local toggle = Instance.new("TextButton")
-toggle.Parent = gui
-toggle.Size = UDim2.new(0,50,0,50)
-toggle.Position = UDim2.new(0,20,0.5,-25)
-toggle.BackgroundColor3 = Color3.fromRGB(20,20,20)
-toggle.Text = "≡"
-toggle.TextScaled = true
-toggle.TextColor3 = Color3.new(1,1,1)
-toggle.BorderSizePixel = 0
-toggle.Active = true
-toggle.Draggable = true
+ToggleUI.Name = "ToggleUI"
+ToggleUI.Parent = game.CoreGui
 
-local corner1 = Instance.new("UICorner", toggle)
-corner1.CornerRadius = UDim.new(1,0)
+Button.Parent = ToggleUI
+Button.Size = UDim2.new(0, 50, 0, 50)
+Button.Position = UDim2.new(0, 15, 0.5, -25)
+Button.BackgroundColor3 = Color3.fromRGB(20,20,20)
+Button.Text = "UI"
+Button.TextColor3 = Color3.new(1,1,1)
+Button.TextScaled = true
+Button.BorderSizePixel = 0
+Button.Active = true
+Button.Draggable = true
 
---========================
--- Main UI
---========================
+local UICorner = Instance.new("UICorner", Button)
+UICorner.CornerRadius = UDim.new(1,0)
 
-local main = Instance.new("Frame")
-main.Parent = gui
-main.Size = UDim2.new(0,350,0,220)
-main.Position = UDim2.new(0.5,-175,0.5,-110)
-main.BackgroundColor3 = Color3.fromRGB(25,25,25)
-main.Visible = true
-main.Active = true
-main.Draggable = true
+-- Toggle Fluent Window
+local Visible = true
 
-local corner2 = Instance.new("UICorner", main)
-corner2.CornerRadius = UDim.new(0,12)
-
--- Top Bar
-local top = Instance.new("Frame")
-top.Parent = main
-top.Size = UDim2.new(1,0,0,35)
-top.BackgroundColor3 = Color3.fromRGB(15,15,15)
-top.BorderSizePixel = 0
-
-local title = Instance.new("TextLabel")
-title.Parent = top
-title.Size = UDim2.new(1,0,1,0)
-title.BackgroundTransparency = 1
-title.Text = "Kasumi"
-title.TextColor3 = Color3.new(1,1,1)
-title.Font = Enum.Font.GothamBold
-title.TextScaled = true
-
---========================
--- Tab Container
---========================
-
-local tabFrame = Instance.new("Frame")
-tabFrame.Parent = main
-tabFrame.Position = UDim2.new(0,10,0,45)
-tabFrame.Size = UDim2.new(1,-20,1,-55)
-tabFrame.BackgroundTransparency = 1
-
-local UIList = Instance.new("UIListLayout")
-UIList.Parent = tabFrame
-UIList.Padding = UDim.new(0,10)
-
--- Example Button
-local function CreateButton(txt)
-	local b = Instance.new("TextButton")
-	b.Parent = tabFrame
-	b.Size = UDim2.new(1,0,0,40)
-	b.BackgroundColor3 = Color3.fromRGB(35,35,35)
-	b.Text = txt
-	b.TextColor3 = Color3.new(1,1,1)
-	b.Font = Enum.Font.Gotham
-	b.TextScaled = true
-	b.BorderSizePixel = 0
-	
-	local c = Instance.new("UICorner", b)
-	c.CornerRadius = UDim.new(0,8)
-
-	return b
-end
-
-local tab1 = CreateButton("Tab")
-local tab2 = CreateButton("Settings")
-local tab3 = CreateButton("Executor")
-
---========================
--- Toggle Logic
---========================
-
-local opened = true
-
-toggle.MouseButton1Click:Connect(function()
-	opened = not opened
-	main.Visible = opened
+Button.MouseButton1Click:Connect(function()
+    Visible = not Visible
+    
+    game:GetService("CoreGui").Fluent.Visible = Visible
+    -- Nếu lỗi thì đổi "Fluent" thành tên ScreenGui của bạn
 end)

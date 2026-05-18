@@ -6,7 +6,7 @@ local Window = Fluent:CreateWindow({
     Title = "PDZ Hub",
     SubTitle = "not share",
     TabWidth = 160,
-    Size = UDim2.fromOffset(500, 400),
+    Size = UDim2.fromOffset(450, 350),
     Acrylic = true,
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.RightControl
@@ -20,12 +20,13 @@ ToggleGui.Parent = game.CoreGui
 
 local ToggleButton = Instance.new("ImageButton")
 ToggleButton.Parent = ToggleGui
-ToggleButton.Size = UDim2.new(0,40,0,40)
+ToggleButton.Size = UDim2.new(0,60,0,60)
 ToggleButton.Position = UDim2.new(0,10,0.5,-30)
 
 -- ảnh 
 ToggleButton.Image = "rbxassetid://95667714826549"
 -- thay 0 bằng ID ảnh upload của bạn
+-- ID ảnh của gamepass của bạn trên roblox
 
 ToggleButton.BackgroundTransparency = 1
 ToggleButton.Active = true
@@ -36,6 +37,7 @@ local Corner = Instance.new("UICorner")
 Corner.CornerRadius = UDim.new(1,0)
 Corner.Parent = ToggleButton
 
+-- di CHUYỂN
 ToggleGui.DisplayOrder = 999999
 
 local Open = true

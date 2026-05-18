@@ -7,7 +7,7 @@ local Window = Fluent:CreateWindow({
     SubTitle = "not share",
     TabWidth = 160,
     Size = UDim2.fromOffset(450, 350),
-    Acrylic = true,
+    Acrylic = false,
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.RightControl
 })

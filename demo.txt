@@ -36,12 +36,14 @@ local Corner = Instance.new("UICorner")
 Corner.CornerRadius = UDim.new(1,0)
 Corner.Parent = ToggleButton
 
--- toggle ui
-local Visible = true
+local UIS = game:GetService("UserInputService")
+
+local Open = true
 
 ToggleButton.MouseButton1Click:Connect(function()
-    Visible = not Visible
-    Window.Root.Visible = Visible
+    Open = not Open
+
+    Fluent.UI.Visible = Open
 end)
 
 --// TAB INFORMATION

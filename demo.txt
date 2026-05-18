@@ -24,7 +24,7 @@ ToggleButton.Size = UDim2.new(0,60,0,60)
 ToggleButton.Position = UDim2.new(0,15,0.5,-30)
 
 -- ảnh 
-ToggleButton.Image = "rbxassetid://3864411488359387"
+ToggleButton.Image = "rbxassetid://8527225602"
 -- thay 0 bằng ID ảnh upload của bạn
 
 ToggleButton.BackgroundTransparency = 1
@@ -36,10 +36,15 @@ local Corner = Instance.new("UICorner")
 Corner.CornerRadius = UDim.new(1,0)
 Corner.Parent = ToggleButton
 
--- toggle ui
+--- toggle ui
 local Visible = true
+
+ToggleGui.DisplayOrder = 999999
 
 ToggleButton.MouseButton1Click:Connect(function()
     Visible = not Visible
-    Window.Root.Visible = Visible
+
+    if Window and Window.Root then
+        Window.Root.Enabled = Visible
+    end
 end)

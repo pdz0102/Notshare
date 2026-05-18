@@ -6,7 +6,7 @@ local Window = Fluent:CreateWindow({
     Title = "PDZ Hub",
     SubTitle = "not share",
     TabWidth = 160,
-    Size = UDim2.fromOffset(405, 310),
+    Size = UDim2.fromOffset(500, 400),
     Acrylic = true,
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.RightControl
@@ -36,17 +36,12 @@ local Corner = Instance.new("UICorner")
 Corner.CornerRadius = UDim.new(1,0)
 Corner.Parent = ToggleButton
 
---- toggle ui
+-- toggle ui
 local Visible = true
-
-ToggleGui.DisplayOrder = 999999
 
 ToggleButton.MouseButton1Click:Connect(function()
     Visible = not Visible
-
-    if Window and Window.Root then
-        Window.Root.Enabled = Visible
-    end
+    Window.Root.Visible = Visible
 end)
 
 --// TAB INFORMATION

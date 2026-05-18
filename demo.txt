@@ -108,3 +108,28 @@ InfoTab:AddButton({
         })
     end
 })
+
+--// NIGHT HUB TAB
+
+local NightTab = Window:AddTab({
+    Title = "test",
+    Icon = "moon"
+})
+
+--// BUTTON 1
+NightTab:AddButton({
+    Title = "Infinite Yield",
+    Description = "Admin commands",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+    end
+})
+
+--// BUTTON 2
+NightTab:AddButton({
+    Title = "Dex Explorer",
+    Description = "Open Dex",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
+    end
+})

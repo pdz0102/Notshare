@@ -86,7 +86,7 @@ InfoTab:AddSection("Discord")
 
 InfoTab:AddButton({
     Title = "Copy Discord Invite Link",
-    Description = "discord kit dimention",
+    Description = "discord săn levi",
     Callback = function()
         setclipboard("https://discord.gg/zxYasXreP")
         Fluent:Notify({
@@ -112,24 +112,27 @@ InfoTab:AddButton({
 --// NIGHT HUB TAB
 
 local NightTab = Window:AddTab({
-    Title = "test",
+    Title = " omg HUB",
     Icon = "moon"
-})
-
---// BUTTON 1
-NightTab:AddButton({
-    Title = "Infinite Yield",
-    Description = "Admin commands",
-    Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
-    end
 })
 
 --// BUTTON 2
 NightTab:AddButton({
-    Title = "Dex Explorer",
-    Description = "Open Dex",
+    Title = "banana cat",
+    Description = "free free",
     Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/tamdznanatv/hubpremumcomback/refs/heads/main/NaNaTVHubcomback.luau"))()
     end
 })
+
+--// ANTI AFK (luôn để code này ở cuối) 
+
+local Players = game:GetService("Players")
+local VirtualUser = game:GetService("VirtualUser")
+
+Players.LocalPlayer.Idled:Connect(function()
+    VirtualUser:CaptureController()
+    VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+    task.wait(1)
+    VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+end)

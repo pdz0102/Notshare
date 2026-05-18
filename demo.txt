@@ -6,7 +6,7 @@ local Window = Fluent:CreateWindow({
     Title = "PDZ Hub",
     SubTitle = "not share",
     TabWidth = 160,
-    Size = UDim2.fromOffset(400, 309),
+    Size = UDim2.fromOffset(405, 310),
     Acrylic = true,
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.RightControl
@@ -20,20 +20,33 @@ ToggleGui.Parent = game.CoreGui
 
 local ToggleButton = Instance.new("TextButton")
 ToggleButton.Parent = ToggleGui
-ToggleButton.Size = UDim2.new(0,50,0,50)
+ToggleButton.Size = UDim2.new(0,55,0,55)
 ToggleButton.Position = UDim2.new(0,15,0.5,-25)
-ToggleButton.BackgroundColor3 = Color3.fromRGB(25,25,25)
-ToggleButton.Text = "☰"
-ToggleButton.TextColor3 = Color3.new(1,1,1)
+
+-- màu chuối 🍌
+ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 221, 40)
+
+ToggleButton.Text = "M1"
+ToggleButton.TextColor3 = Color3.fromRGB(0,0,0)
 ToggleButton.TextScaled = true
+ToggleButton.Font = Enum.Font.GothamBold
 ToggleButton.BorderSizePixel = 0
+
 ToggleButton.Active = true
 ToggleButton.Draggable = true
 
+-- bo tròn
 local Corner = Instance.new("UICorner")
 Corner.CornerRadius = UDim.new(1,0)
 Corner.Parent = ToggleButton
 
+-- viền đen
+local Stroke = Instance.new("UIStroke")
+Stroke.Parent = ToggleButton
+Stroke.Color = Color3.fromRGB(0,0,0)
+Stroke.Thickness = 2
+
+-- toggle ui
 local Visible = true
 
 ToggleButton.MouseButton1Click:Connect(function()

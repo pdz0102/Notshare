@@ -18,20 +18,16 @@ local ToggleGui = Instance.new("ScreenGui")
 ToggleGui.Name = "ToggleGui"
 ToggleGui.Parent = game.CoreGui
 
-local ToggleButton = Instance.new("TextButton")
+local ToggleButton = Instance.new("ImageButton")
 ToggleButton.Parent = ToggleGui
-ToggleButton.Size = UDim2.new(0,55,0,55)
-ToggleButton.Position = UDim2.new(0,15,0.5,-25)
+ToggleButton.Size = UDim2.new(0,60,0,60)
+ToggleButton.Position = UDim2.new(0,15,0.5,-30)
 
--- màu chuối 🍌
-ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 221, 40)
+-- ảnh 
+ToggleButton.Image = "rbxassetid://0"
+-- thay 0 bằng ID ảnh upload của bạn
 
-ToggleButton.Text = "M1"
-ToggleButton.TextColor3 = Color3.fromRGB(0,0,0)
-ToggleButton.TextScaled = true
-ToggleButton.Font = Enum.Font.GothamBold
-ToggleButton.BorderSizePixel = 0
-
+ToggleButton.BackgroundTransparency = 1
 ToggleButton.Active = true
 ToggleButton.Draggable = true
 
@@ -39,12 +35,6 @@ ToggleButton.Draggable = true
 local Corner = Instance.new("UICorner")
 Corner.CornerRadius = UDim.new(1,0)
 Corner.Parent = ToggleButton
-
--- viền đen
-local Stroke = Instance.new("UIStroke")
-Stroke.Parent = ToggleButton
-Stroke.Color = Color3.fromRGB(0,0,0)
-Stroke.Thickness = 2
 
 -- toggle ui
 local Visible = true

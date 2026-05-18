@@ -20,8 +20,8 @@ ToggleGui.Parent = game.CoreGui
 
 local ToggleButton = Instance.new("ImageButton")
 ToggleButton.Parent = ToggleGui
-ToggleButton.Size = UDim2.new(0,60,0,60)
-ToggleButton.Position = UDim2.new(0,15,0.5,-30)
+ToggleButton.Size = UDim2.new(0,40,0,40)
+ToggleButton.Position = UDim2.new(0,10,0.5,-30)
 
 -- ảnh 
 ToggleButton.Image = "rbxassetid://95667714826549"
@@ -48,3 +48,65 @@ ToggleButton.MouseButton1Click:Connect(function()
         Window.Root.Enabled = Visible
     end
 end)
+
+--// TAB INFORMATION
+
+local InfoTab = Window:AddTab({
+    Title = "Information",
+    Icon = "info"
+})
+
+InfoTab:AddSection("Owner Infomation")
+
+InfoTab:AddParagraph({
+    Title = "Information",
+    Content = [[
+Name: phuc
+From: VietNamese 🇻🇳
+Birthday: 18/5
+Age: idk
+Home Adress: idk
+]]
+})
+
+InfoTab:AddSection("Library Information")
+
+InfoTab:AddParagraph({
+    Title = "Library Information",
+    Content = [[
+Author: PDZ
+Modified Name: FLUENT
+SCRIPT TẠO RA VỚI MỤC ĐÍCH: giúp chúng ta sử dụng nhiều script hơn
+và tôi sẽ không chia sẻ script này
+PDZ hub: tôi chỉ chia sẻ source cho các bạn tự gắn script của mình vào thôi
+Original Name: Fluent
+Original Author: Dawid
+]]
+})
+
+InfoTab:AddSection("Discord")
+
+InfoTab:AddButton({
+    Title = "Copy Discord Invite Link",
+    Description = "discord kit dimention",
+    Callback = function()
+        setclipboard("https://discord.gg/zxYasXreP")
+        Fluent:Notify({
+            Title = "Copied",
+            Content = "Discord link copied",
+            Duration = 3
+        })
+    end
+})
+
+InfoTab:AddButton({
+    Title = "Set to All Theme",
+    Description = "Apply theme settings",
+    Callback = function()
+        Fluent:Notify({
+            Title = "Theme",
+            Content = "Theme applied",
+            Duration = 3
+        })
+    end
+})

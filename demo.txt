@@ -148,7 +148,7 @@ BananaTab:AddButton({
 
 local MaruTab = Window:AddTab({
     Title = "Maru",
-    Icon = "M"
+    Icon = "star"
 })
 
 MaruTab:AddSection("Maru Hub")

@@ -36,14 +36,15 @@ local Corner = Instance.new("UICorner")
 Corner.CornerRadius = UDim.new(1,0)
 Corner.Parent = ToggleButton
 
-ToggleGui.Parent = game:GetService("CoreGui")
 ToggleGui.DisplayOrder = 999999
 
 local Open = true
 
 ToggleButton.MouseButton1Click:Connect(function()
     Open = not Open
-    Window.Root.Visible = Open
+
+    local Gui = Window.Root.Parent
+    Gui.Enabled = Open
 end)
 
 --// TAB INFORMATION

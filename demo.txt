@@ -127,6 +127,40 @@ NightTab:AddButton({
     end
 })
 
+--// TAB BANANA
+
+local BananaTab = Window:AddTab({
+    Title = "Banana",
+    Icon = "banana"
+})
+
+BananaTab:AddSection("Banana Hub")
+
+BananaTab:AddButton({
+    Title = "Banana Script",
+    Description = "test thôi",
+    Callback = function()
+        print("Banana Execute")
+    end
+})
+
+--// TAB MARU
+
+local MaruTab = Window:AddTab({
+    Title = "Maru",
+    Icon = "M"
+})
+
+MaruTab:AddSection("Maru Hub")
+
+MaruTab:AddButton({
+    Title = "Maru Script",
+    Description = "test thôi",
+    Callback = function()
+        print("Maru Execute")
+    end
+})
+
 --// ANTI AFK (luôn để code này ở cuối) 
 
 local Players = game:GetService("Players")

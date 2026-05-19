@@ -161,6 +161,56 @@ MaruTab:AddButton({
     end
 })
 
+--// THEME TAB
+
+local SettingsTab = Window:AddTab({
+    Title = "THEMES",
+    Icon = "settings"
+})
+
+SettingsTab:AddSection("Themes")
+
+--// VIETNAM THEME
+
+SettingsTab:AddButton({
+    Title = "🇻🇳 Vietnam Theme",
+    Description = "Red UI + Yellow Star",
+    Callback = function()
+
+        -- nền đỏ
+        Window.Root.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+
+        -- xóa sao cũ nếu có
+        if Window.Root:FindFirstChild("VietnamStar") then
+            Window.Root.VietnamStar:Destroy()
+        end
+
+        -- tạo sao vàng
+        local Star = Instance.new("TextLabel")
+        Star.Name = "VietnamStar"
+        Star.Parent = Window.Root
+
+        Star.Size = UDim2.new(0,120,0,120)
+        Star.Position = UDim2.new(0.5,-60,0.5,-60)
+
+        Star.BackgroundTransparency = 1
+        Star.Text = "★"
+        Star.TextScaled = true
+        Star.Font = Enum.Font.GothamBold
+        Star.TextColor3 = Color3.fromRGB(255, 221, 0)
+
+        -- làm mờ sao để nhìn đẹp hơn
+        Star.TextTransparency = 0.35
+
+        Fluent:Notify({
+            Title = "Theme Changed",
+            Content = "Vietnam Theme Enabled",
+            Duration = 3
+        })
+
+    end
+})
+
 --// ANTI AFK (luôn để code này ở cuối) 
 
 local Players = game:GetService("Players")

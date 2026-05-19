@@ -187,25 +187,33 @@ SettingsTab:AddButton({
 
         -- tạo sao vàng
         local Star = Instance.new("TextLabel")
-        Star.Name = "VietnamStar"
-        Star.Parent = Window.Root
+Star.Name = "VietnamStar"
+Star.Parent = Window.Root
 
-        Star.Size = UDim2.new(0,120,0,120)
-        Star.Position = UDim2.new(0.5,-60,0.5,-60)
+Star.Size = UDim2.new(0,140,0,140)
+Star.Position = UDim2.new(0.5,-70,0.5,-70)
 
-        Star.BackgroundTransparency = 1
-        Star.Text = "★"
-        Star.TextScaled = true
-        Star.Font = Enum.Font.GothamBold
-        Star.TextColor3 = Color3.fromRGB(255, 221, 0)
+Star.BackgroundTransparency = 1
 
-        -- làm mờ sao để nhìn đẹp hơn
-        Star.TextTransparency = 0.35
+-- sao nhọn
+Star.Text = "✦"
+
+Star.TextScaled = true
+Star.Font = Enum.Font.GothamBold
+
+-- vàng cờ VN
+Star.TextColor3 = Color3.fromRGB(255,221,0)
+
+-- độ mờ
+Star.TextTransparency = 0.3
+
+-- nằm dưới UI
+Star.ZIndex = 0
 
         Fluent:Notify({
-            Title = "Theme Changed",
+            Title = "Theme VN nhân ngày 19/5"
             Content = "Vietnam Theme Enabled",
-            Duration = 3
+            Duration = 4
         })
 
     end

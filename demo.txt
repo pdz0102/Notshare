@@ -157,74 +157,17 @@ MaruTab:AddButton({
     Title = "Maru Script",
     Description = "test thôi",
     Callback = function()
-        print("Maru Execute")
+        repeat wait() until game:IsLoaded() and game.Players.LocalPlayer 
+getgenv().AutoLoad = true --auto load on hop
+getgenv().team = "Pirates" -- Pirates or Marines
+loadstring(game:HttpGet("https://raw.githubusercontent.com/vinh129150/hack/refs/heads/main/Bloxfruits.lua"))()
     end
 })
 
---// THEME TAB
 
-local SettingsTab = Window:AddTab({
-    Title = "THEMES",
-    Icon = "settings"
-})
 
 SettingsTab:AddSection("Themes")
 
---// VIETNAM THEME
-
-SettingsTab:AddButton({
-    Title = "🇻🇳 Vietnam Theme",
-    Description = "Red UI + Yellow Star",
-    Callback = function()
-
-        -- đổi màu toàn UI
-        Fluent.Options.Theme:SetValue("Darker")
-
-        -- tìm frame chính
-        for _,v in pairs(Window.Root:GetDescendants()) do
-            if v:IsA("Frame") then
-                v.BackgroundColor3 = Color3.fromRGB(180,0,0)
-            end
-        end
-
-        -- xóa sao cũ nếu có
-        if Window.Root:FindFirstChild("VietnamStar") then
-            Window.Root.VietnamStar:Destroy()
-        end
-
-        -- tạo sao vàng
-        local Star = Instance.new("TextLabel")
-        Star.Name = "VietnamStar"
-        Star.Parent = Window.Root
-
-        Star.Size = UDim2.new(0,140,0,140)
-        Star.Position = UDim2.new(0.5,-70,0.5,-70)
-
-        Star.BackgroundTransparency = 1
-
-        -- sao nhọn
-        Star.Text = "✦"
-
-        Star.TextScaled = true
-        Star.Font = Enum.Font.GothamBold
-
-        -- vàng cờ VN
-        Star.TextColor3 = Color3.fromRGB(255,221,0)
-
-        -- độ mờ
-        Star.TextTransparency = 0.3
-
-        -- nằm dưới UI
-        Star.ZIndex = 0
-
-        Fluent:Notify({
-            Title = "Theme VN nhân ngày 19/5"
-            Content = "Vietnam Theme Enabled",
-            Duration = 4
-        })
-
-    end
-})
 
 --// ANTI AFK (luôn để code này ở cuối) 
 

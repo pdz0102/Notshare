@@ -177,8 +177,15 @@ SettingsTab:AddButton({
     Description = "Red UI + Yellow Star",
     Callback = function()
 
-        -- nền đỏ
-        Window.Root.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+        -- đổi màu toàn UI
+        Fluent.Options.Theme:SetValue("Darker")
+
+        -- tìm frame chính
+        for _,v in pairs(Window.Root:GetDescendants()) do
+            if v:IsA("Frame") then
+                v.BackgroundColor3 = Color3.fromRGB(180,0,0)
+            end
+        end
 
         -- xóa sao cũ nếu có
         if Window.Root:FindFirstChild("VietnamStar") then

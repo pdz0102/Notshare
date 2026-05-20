@@ -61,9 +61,9 @@ InfoTab:AddSection("Owner Infomation")
 InfoTab:AddParagraph({
     Title = "Information",
     Content = [[
-Name: phuc
+Name: idk
 From: VietNamese 🇻🇳
-Birthday: 18/5
+Birthday: idl
 Age: idk
 Home Adress: idk
 ]]
@@ -74,12 +74,7 @@ InfoTab:AddSection("Library Information")
 InfoTab:AddParagraph({
     Title = "Library Information",
     Content = [[
-Author: PDZ
 Modified Name: FLUENT
-SCRIPT TẠO RA VỚI MỤC ĐÍCH: giúp chúng ta sử dụng nhiều script hơn
-và tôi sẽ không chia sẻ script này
-PDZ hub: tôi chỉ chia sẻ source cho các bạn tự gắn script của mình vào thôi
-Original Name: Fluent
 Original Author: Dawid
 ]]
 })
@@ -137,10 +132,10 @@ local BananaTab = Window:AddTab({
 BananaTab:AddSection("Banana Hub")
 
 BananaTab:AddButton({
-    Title = "Banana Script",
-    Description = "test thôi",
+    Title = "fps Script",
+    Description = "thôi",
     Callback = function()
-        print("Banana Execute")
+        loadstring(game:HttpGet("https://pastefy.app/OruW5AwY/raw"))()
     end
 })
 
@@ -164,10 +159,170 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/vinh129150/hack/refs/
     end
 })
 
+--// BOOST TAB
 
+local BoostTab = Window:AddTab({
+    Title = "Boost",
+    Icon = "zap"
+})
 
-SettingsTab:AddSection("Themes")
+BoostTab:AddSection("FPS & Graphics")
 
+--// LOW GRAPHICS
+
+BoostTab:AddButton({
+    Title = "Low Graphics",
+    Description = "Reduce graphics & effects",
+    Callback = function()
+
+        local Lighting = game:GetService("Lighting")
+        local Terrain = workspace:FindFirstChildOfClass("Terrain")
+
+        pcall(function()
+
+            settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+
+            Lighting.GlobalShadows = false
+            Lighting.FogEnd = 100000
+            Lighting.Brightness = 1
+
+            if Terrain then
+                Terrain.WaterWaveSize = 0
+                Terrain.WaterWaveSpeed = 0
+                Terrain.WaterReflectance = 0
+                Terrain.WaterTransparency = 0.2
+            end
+
+            for _,v in ipairs(game:GetDescendants()) do
+
+                if v:IsA("BasePart") then
+                    v.Material = Enum.Material.Plastic
+                    v.Reflectance = 0
+                end
+
+                if v:IsA("Decal") or v:IsA("Texture") then
+                    v.Transparency = 0.4
+                end
+
+                if v:IsA("ParticleEmitter") then
+                    v.Rate = 0
+                end
+
+                if v:IsA("Trail")
+                or v:IsA("Smoke")
+                or v:IsA("Fire")
+                or v:IsA("Sparkles") then
+                    v.Enabled = false
+                end
+            end
+
+            for _,v in ipairs(Lighting:GetDescendants()) do
+
+                if v:IsA("BloomEffect")
+                or v:IsA("BlurEffect")
+                or v:IsA("SunRaysEffect")
+                or v:IsA("DepthOfFieldEffect") then
+                    v.Enabled = false
+                end
+            end
+
+        end)
+
+        Fluent:Notify({
+            Title = "Boost",
+            Content = "Low Graphics Enabled",
+            Duration = 3
+        })
+
+    end
+})
+
+--// FPS BOOST
+
+BoostTab:AddButton({
+    Title = "FPS Boost",
+    Description = "Boost FPS for mobile",
+    Callback = function()
+
+        pcall(function()
+
+            settings().Rendering.QualityLevel =
+                Enum.QualityLevel.Level01
+
+            game:GetService("RunService"):Set3dRenderingEnabled(true)
+
+            for _,v in ipairs(game:GetDescendants()) do
+
+                if v:IsA("ParticleEmitter")
+                or v:IsA("PostEffect") then
+                    v.Enabled = false
+                end
+            end
+
+        end)
+
+        Fluent:Notify({
+            Title = "Boost",
+            Content = "FPS Boost Enabled",
+            Duration = 3
+        })
+
+    end
+})
+
+--// REMOVE TEXTURES
+
+BoostTab:AddButton({
+    Title = "Remove Textures",
+    Description = "Ultra FPS mode",
+    Callback = function()
+
+        for _,v in ipairs(game:GetDescendants()) do
+
+            if v:IsA("Texture")
+            or v:IsA("Decal") then
+                v:Destroy()
+            end
+        end
+
+        Fluent:Notify({
+            Title = "Boost",
+            Content = "Textures Removed",
+            Duration = 3
+        })
+
+    end
+})
+
+--// DARK GRAPHICS
+
+BoostTab:AddButton({
+    Title = "Dark Graphics",
+    Description = "Dark optimized graphics",
+    Callback = function()
+
+        local Lighting = game:GetService("Lighting")
+
+        Lighting.Brightness = 0.8
+
+        for _,v in ipairs(Lighting:GetDescendants()) do
+
+            if v:IsA("ColorCorrectionEffect") then
+                v.Saturation = -0.2
+                v.Brightness = -0.05
+            end
+        end
+
+        Fluent:Notify({
+            Title = "Boost",
+            Content = "Dark Graphics Enabled",
+            Duration = 3
+        })
+
+    end
+})
+
+Window:SelectTab(InformationTab)
 
 --// ANTI AFK (luôn để code này ở cuối) 
 

@@ -14,12 +14,14 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.RightControl
 })
 
---// TOGGLE BUTTON
+--// TOGGLE BUTTON FIXED
+
+local CoreGui = gethui and gethui() or game.CoreGui
 
 local ToggleGui = Instance.new("ScreenGui")
 ToggleGui.Name = "ToggleGui"
-ToggleGui.Parent = gethui and gethui() or game.CoreGui
 ToggleGui.ResetOnSpawn = false
+ToggleGui.Parent = CoreGui
 
 local ToggleButton = Instance.new("ImageButton")
 ToggleButton.Parent = ToggleGui
@@ -30,30 +32,33 @@ ToggleButton.Position = UDim2.new(0,15,0.5,-25)
 ToggleButton.Image = "rbxassetid://89311262811917"
 
 ToggleButton.BackgroundColor3 = Color3.fromRGB(255,255,255)
+ToggleButton.BackgroundTransparency = 0
 
-local UICorner = Instance.new("UICorner")
-UICorner.CornerRadius = UDim.new(1,0)
-UICorner.Parent = ToggleButton
+local Corner = Instance.new("UICorner")
+Corner.Parent = ToggleButton
+Corner.CornerRadius = UDim.new(1,0)
 
 local Stroke = Instance.new("UIStroke")
 Stroke.Parent = ToggleButton
-Stroke.Thickness = 2
 Stroke.Color = Color3.fromRGB(0,170,255)
+Stroke.Thickness = 2
 
 ToggleButton.Active = true
 ToggleButton.Draggable = true
 
-local UiOpen = true
+--// FIX TOGGLE
+
+local Open = true
 
 ToggleButton.MouseButton1Click:Connect(function()
 
-    UiOpen = not UiOpen
+    Open = not Open
 
-    for _,v in pairs(game.CoreGui:GetChildren()) do
-        if v.Name == "Fluent" then
-            v.Enabled = UiOpen
-        end
-    end
+    pcall(function()
+
+        Window:Minimize(not Open)
+
+    end)
 
 end)
 

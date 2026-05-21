@@ -7,8 +7,8 @@ local Fluent = loadstring(game:HttpGet(
 --// WINDOW
 
 local Window = Fluent:CreateWindow({
-    Title = "Night Hub [PREMIUM]",
-    SubTitle = "@_luongminhnghia - discord.gg/nighthub",
+    Title = "PDZ Hub [PREMIUM]",
+    SubTitlte = "all script [PREMIUM]",
     TabWidth = 160,
     Size = UDim2.fromOffset(500, 330),
     Acrylic = false,
@@ -107,9 +107,9 @@ MainTab:AddButton({
 MainTab:AddDropdown("Dropdown1", {
     Title = "Dropdown without description",
     Values = {
-        "Option 1",
-        "Option 2",
-        "Option 3"
+        "CAK V1",
+        "CAK V2",
+        "CAK V3"
     },
     Multi = false,
     Default = 1
@@ -128,11 +128,11 @@ MainTab:AddDropdown("Dropdown2", {
 })
 
 --// =========================
---// STACK TAB
+--// TAB
 --// =========================
 
 local StackTab = Window:AddTab({
-    Title = "Stack",
+    Title = "KAITUN",
     Icon = "layers"
 })
 
@@ -148,80 +148,59 @@ StackTab:AddButton({
 })
 
 --// =========================
---// ITEMS TAB
+--// TAB
 --// =========================
 
 local ItemsTab = Window:AddTab({
-    Title = "Items",
+    Title = "AUTO BOUNTY",
     Icon = "swords"
 })
 
-ItemsTab:AddSection("Items")
+ItemsTab:AddSection("MARU")
 
 ItemsTab:AddButton({
-    Title = "Get Items",
+    Title = "M1",
     Callback = function()
         print("Items")
     end
 })
 
 --// =========================
---// FRUITS TAB
+--// TAB
 --// =========================
 
 local FruitsTab = Window:AddTab({
-    Title = "Fruits",
+    Title = "KAITUN V4",
     Icon = "apple"
 })
 
-FruitsTab:AddSection("Fruits")
+FruitsTab:AddSection("BANANA")
 
 FruitsTab:AddButton({
-    Title = "Auto Fruits",
+    Title = "BANANA",
     Callback = function()
         print("Fruits")
     end
 })
 
 --// =========================
---// DUNGEON TAB
+--// TAB
 --// =========================
 
 local DungeonTab = Window:AddTab({
-    Title = "Dungeon",
+    Title = "KAITUN LEVI",
     Icon = "shield"
 })
 
-DungeonTab:AddSection("Dungeon")
+DungeonTab:AddSection("BANANA")
 
 DungeonTab:AddButton({
-    Title = "Auto Dungeon",
+    Title = "LEVI",
     Callback = function()
         print("Dungeon")
     end
 })
 
---// =========================
---// LOCALPLAYER TAB
---// =========================
-
-local PlayerTab = Window:AddTab({
-    Title = "LocalPlayer",
-    Icon = "user"
-})
-
-PlayerTab:AddSection("Player")
-
-PlayerTab:AddSlider("WS", {
-    Title = "WalkSpeed",
-    Default = 16,
-    Min = 16,
-    Max = 200,
-    Rounding = 0,
-    Callback = function(v)
-        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = v
-    end
-})
 
 --// =========================
 --// SETTINGS TAB
@@ -294,205 +273,50 @@ SettingsTab:AddButton({
     end
 })
 
---// VIETNAM THEME
+--// RED NIGHT THEME
 
-SettingsTab:AddButton({
-    Title = "🇻🇳 Vietnam Theme",
-    Callback = function()
+local RedTheme = {
+    Background = Color3.fromRGB(120, 15, 15),
+    Secondary = Color3.fromRGB(95, 10, 10),
+    Accent = Color3.fromRGB(255, 170, 0),
+    Text = Color3.fromRGB(255,255,255)
+}
 
-        for _,v in pairs(Window.Root:GetDescendants()) do
-            if v:IsA("Frame") then
-                v.BackgroundColor3 = Color3.fromRGB(180,0,0)
-            end
+for _,v in pairs(Window.Root:GetDescendants()) do
+
+    -- frame
+    if v:IsA("Frame") then
+        v.BackgroundColor3 = RedTheme.Background
+    end
+
+    -- scrolling
+    if v:IsA("ScrollingFrame") then
+        v.BackgroundColor3 = RedTheme.Secondary
+    end
+
+    -- text
+    if v:IsA("TextLabel")
+    or v:IsA("TextButton") then
+
+        v.TextColor3 = RedTheme.Text
+
+        -- chữ vàng
+        if string.find(v.Text:lower(),"information")
+        or string.find(v.Text:lower(),"shop")
+        or string.find(v.Text:lower(),"stack") then
+
+            v.TextColor3 = RedTheme.Accent
         end
-
-        if Window.Root:FindFirstChild("VietnamStar") then
-            Window.Root.VietnamStar:Destroy()
-        end
-
-        local Star = Instance.new("TextLabel")
-        Star.Name = "VietnamStar"
-        Star.Parent = Window.Root
-
-        Star.Size = UDim2.new(0,150,0,150)
-        Star.Position = UDim2.new(0.5,-75,0.5,-75)
-
-        Star.BackgroundTransparency = 1
-        Star.Text = "✦"
-        Star.TextScaled = true
-        Star.Font = Enum.Font.GothamBold
-
-        Star.TextColor3 = Color3.fromRGB(255,221,0)
-        Star.TextTransparency = 0.75
-
     end
-})
 
---// NOTIFY
-
-Fluent:Notify({
-    Title = "Night Hub",
-    Content = "UI Loaded Successfully",
-    Duration = 5
-})
-
-
-
---// LOW GRAPHICS
-
-BoostTab:AddButton({
-    Title = "Low Graphics",
-    Description = "Reduce graphics & effects",
-    Callback = function()
-
-        local Lighting = game:GetService("Lighting")
-        local Terrain = workspace:FindFirstChildOfClass("Terrain")
-
-        pcall(function()
-
-            settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
-
-            Lighting.GlobalShadows = false
-            Lighting.FogEnd = 100000
-            Lighting.Brightness = 1
-
-            if Terrain then
-                Terrain.WaterWaveSize = 0
-                Terrain.WaterWaveSpeed = 0
-                Terrain.WaterReflectance = 0
-                Terrain.WaterTransparency = 0.2
-            end
-
-            for _,v in ipairs(game:GetDescendants()) do
-
-                if v:IsA("BasePart") then
-                    v.Material = Enum.Material.Plastic
-                    v.Reflectance = 0
-                end
-
-                if v:IsA("Decal") or v:IsA("Texture") then
-                    v.Transparency = 0.4
-                end
-
-                if v:IsA("ParticleEmitter") then
-                    v.Rate = 0
-                end
-
-                if v:IsA("Trail")
-                or v:IsA("Smoke")
-                or v:IsA("Fire")
-                or v:IsA("Sparkles") then
-                    v.Enabled = false
-                end
-            end
-
-            for _,v in ipairs(Lighting:GetDescendants()) do
-
-                if v:IsA("BloomEffect")
-                or v:IsA("BlurEffect")
-                or v:IsA("SunRaysEffect")
-                or v:IsA("DepthOfFieldEffect") then
-                    v.Enabled = false
-                end
-            end
-
-        end)
-
-        Fluent:Notify({
-            Title = "Boost",
-            Content = "Low Graphics Enabled",
-            Duration = 3
-        })
-
+    -- stroke
+    if v:IsA("UIStroke") then
+        v.Color = Color3.fromRGB(255,140,0)
     end
-})
+end
 
---// FPS BOOST
-
-BoostTab:AddButton({
-    Title = "FPS Boost",
-    Description = "Boost FPS for mobile",
-    Callback = function()
-
-        pcall(function()
-
-            settings().Rendering.QualityLevel =
-                Enum.QualityLevel.Level01
-
-            game:GetService("RunService"):Set3dRenderingEnabled(true)
-
-            for _,v in ipairs(game:GetDescendants()) do
-
-                if v:IsA("ParticleEmitter")
-                or v:IsA("PostEffect") then
-                    v.Enabled = false
-                end
-            end
-
-        end)
-
-        Fluent:Notify({
-            Title = "Boost",
-            Content = "FPS Boost Enabled",
-            Duration = 3
-        })
-
-    end
-})
-
---// REMOVE TEXTURES
-
-BoostTab:AddButton({
-    Title = "Remove Textures",
-    Description = "Ultra FPS mode",
-    Callback = function()
-
-        for _,v in ipairs(game:GetDescendants()) do
-
-            if v:IsA("Texture")
-            or v:IsA("Decal") then
-                v:Destroy()
-            end
-        end
-
-        Fluent:Notify({
-            Title = "Boost",
-            Content = "Textures Removed",
-            Duration = 3
-        })
-
-    end
-})
-
---// DARK GRAPHICS
-
-BoostTab:AddButton({
-    Title = "Dark Graphics",
-    Description = "Dark optimized graphics",
-    Callback = function()
-
-        local Lighting = game:GetService("Lighting")
-
-        Lighting.Brightness = 0.8
-
-        for _,v in ipairs(Lighting:GetDescendants()) do
-
-            if v:IsA("ColorCorrectionEffect") then
-                v.Saturation = -0.2
-                v.Brightness = -0.05
-            end
-        end
-
-        Fluent:Notify({
-            Title = "Boost",
-            Content = "Dark Graphics Enabled",
-            Duration = 3
-        })
-
-    end
-})
-
-Window:SelectTab(MainTab)
+-- nền acrylic đỏ
+Window.Root.BackgroundTransparency = 0.15
 
 --// ANTI AFK (luôn để code này ở cuối) 
 

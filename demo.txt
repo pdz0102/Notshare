@@ -1,7 +1,7 @@
 --// FLUENT UI
 
 local Fluent = loadstring(game:HttpGet(
-"https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"
+"https://raw.githubusercontent.com/dawid-scripts/Fluent/master/source.lua"
 ))()
 
 --// WINDOW
@@ -82,8 +82,9 @@ MainTab:AddButton({
     Description = "main"
     Callback = function()
         repeat wait() until game:IsLoaded() and game.Players.LocalPlayer 
-getgenv().Key = "DÁN KEY VÀO" 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/obiiyeuem/vthangsitink/main/BananaHub.lua"))()
+        getgenv().Key = "DÁN KEY VÀO" 
+        loadstring(game:HttpGet(
+        "https://raw.githubusercontent.com/obiiyeuem/vthangsitink/main/BananaHub.lua"))()
     end
 })
 
@@ -91,7 +92,7 @@ MainTab:AddSection("MARU HUB")
 
 MainTab:AddButton({
     Title = "MARU",
-    Description = " main"
+    Description = "main"
     Callback = function()
         print(hehe)
     end
@@ -104,8 +105,9 @@ MainTab:AddButton({
     Description = "main",
     Callback = function()
         repeat wait() until game:IsLoaded()
-script_key = "DÁN KEY VÀO"
-loadstring(game:HttpGet("https://raw.githubusercontent.com/WhiteX1208/Scripts/refs/heads/main/BF-Beta.lua"))()
+        script_key = "DÁN KEY VÀO"
+        loadstring(game:HttpGet(
+        "https://raw.githubusercontent.com/WhiteX1208/Scripts/refs/heads/main/BF-Beta.lua"))()
     end
 })
 

@@ -93,7 +93,7 @@ MainTab:AddButton({
     Title = "MARU",
     Description = " main"
     Callback = function()
-        
+        print(hehe)
     end
 })
 
@@ -255,50 +255,7 @@ SettingsTab:AddButton({
     end
 })
 
---// RED NIGHT THEME
 
-local RedTheme = {
-    Background = Color3.fromRGB(120, 15, 15),
-    Secondary = Color3.fromRGB(95, 10, 10),
-    Accent = Color3.fromRGB(255, 170, 0),
-    Text = Color3.fromRGB(255,255,255)
-}
-
-for _,v in pairs(Window.Root:GetDescendants()) do
-
-    -- frame
-    if v:IsA("Frame") then
-        v.BackgroundColor3 = RedTheme.Background
-    end
-
-    -- scrolling
-    if v:IsA("ScrollingFrame") then
-        v.BackgroundColor3 = RedTheme.Secondary
-    end
-
-    -- text
-    if v:IsA("TextLabel")
-    or v:IsA("TextButton") then
-
-        v.TextColor3 = RedTheme.Text
-
-        -- chữ vàng
-        if string.find(v.Text:lower(),"information")
-        or string.find(v.Text:lower(),"shop")
-        or string.find(v.Text:lower(),"stack") then
-
-            v.TextColor3 = RedTheme.Accent
-        end
-    end
-
-    -- stroke
-    if v:IsA("UIStroke") then
-        v.Color = Color3.fromRGB(255,140,0)
-    end
-end
-
--- nền acrylic đỏ
-Window.Root.BackgroundTransparency = 0.15
 
 --// ANTI AFK (luôn để code này ở cuối) 
 

@@ -1,18 +1,22 @@
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
-local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+--// FLUENT UI
+
+local Fluent = loadstring(game:HttpGet(
+"https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"
+))()
+
+--// WINDOW
 
 local Window = Fluent:CreateWindow({
-    Title = "PDZ Hub",
-    SubTitle = "not share",
+    Title = "Night Hub [PREMIUM]",
+    SubTitle = "@_luongminhnghia - discord.gg/nighthub",
     TabWidth = 160,
-    Size = UDim2.fromOffset(450, 350),
+    Size = UDim2.fromOffset(500, 330),
     Acrylic = false,
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.RightControl
 })
 
---// NÚT BẬT/TẮT MENU
+--// ROUND TOGGLE UI BUTTON
 
 local ToggleGui = Instance.new("ScreenGui")
 ToggleGui.Name = "ToggleGui"
@@ -20,153 +24,319 @@ ToggleGui.Parent = game.CoreGui
 
 local ToggleButton = Instance.new("ImageButton")
 ToggleButton.Parent = ToggleGui
-ToggleButton.Size = UDim2.new(0,60,0,60)
-ToggleButton.Position = UDim2.new(0,10,0.5,-30)
 
--- ảnh 
-ToggleButton.Image = "rbxassetid://95667714826549"
--- thay 0 bằng ID ảnh upload của bạn
--- ID ảnh của gamepass của bạn trên roblox
+-- size nút
+ToggleButton.Size = UDim2.new(0,50,0,50)
 
-ToggleButton.BackgroundTransparency = 1
-ToggleButton.Active = true
-ToggleButton.Draggable = true
+-- vị trí
+ToggleButton.Position = UDim2.new(0,15,0.5,-25)
+
+-- ảnh
+ToggleButton.Image = "rbxassetid://3864411488359387"
+-- thay ID ảnh tại đây
+
+-- nền trong suốt
+ToggleButton.BackgroundColor3 = Color3.fromRGB(255,255,255)
+ToggleButton.BackgroundTransparency = 0
 
 -- bo tròn
 local Corner = Instance.new("UICorner")
 Corner.CornerRadius = UDim.new(1,0)
 Corner.Parent = ToggleButton
 
--- di CHUYỂN
-ToggleGui.DisplayOrder = 999999
+-- viền
+local Stroke = Instance.new("UIStroke")
+Stroke.Parent = ToggleButton
+Stroke.Thickness = 2
+Stroke.Color = Color3.fromRGB(0,170,255)
 
-local Open = true
+-- kéo nút
+ToggleButton.Active = true
+ToggleButton.Draggable = true
+
+-- bật/tắt ui
+local Visible = true
 
 ToggleButton.MouseButton1Click:Connect(function()
-    Open = not Open
 
-    local Gui = Window.Root.Parent
-    Gui.Enabled = Open
+    Visible = not Visible
+
+    Window.Root.Visible = Visible
+
 end)
 
---// TAB INFORMATION
 
-local InfoTab = Window:AddTab({
-    Title = "Information",
-    Icon = "info"
+--// =========================
+--// MAIN TAB
+--// =========================
+
+local MainTab = Window:AddTab({
+    Title = "Main",
+    Icon = "home"
 })
 
-InfoTab:AddSection("Owner Infomation")
+MainTab:AddSection("Main Seperator")
 
-InfoTab:AddParagraph({
-    Title = "Information",
-    Content = [[
-Name: idk
-From: VietNamese 🇻🇳
-Birthday: idl
-Age: idk
-Home Adress: idk
-]]
-})
-
-InfoTab:AddSection("Library Information")
-
-InfoTab:AddParagraph({
-    Title = "Library Information",
-    Content = [[
-Modified Name: FLUENT
-Original Author: Dawid
-]]
-})
-
-InfoTab:AddSection("Discord")
-
-InfoTab:AddButton({
-    Title = "Copy Discord Invite Link",
-    Description = "discord săn levi",
-    Callback = function()
-        setclipboard("https://discord.gg/zxYasXreP")
-        Fluent:Notify({
-            Title = "Copied",
-            Content = "Discord link copied",
-            Duration = 3
-        })
+MainTab:AddToggle("Toggle1", {
+    Title = "Toggle without desc but enable",
+    Default = true,
+    Callback = function(v)
+        print(v)
     end
 })
 
-InfoTab:AddButton({
-    Title = "Set to All Theme",
-    Description = "Apply theme settings",
-    Callback = function()
-        Fluent:Notify({
-            Title = "Theme",
-            Content = "Theme applied",
-            Duration = 3
-        })
+MainTab:AddToggle("Toggle2", {
+    Title = "Toggle",
+    Description = "This is toggle with description",
+    Default = false,
+    Callback = function(v)
+        print(v)
     end
 })
 
---// NIGHT HUB TAB
+MainTab:AddSection("Other Features")
 
-local NightTab = Window:AddTab({
-    Title = " omg HUB",
-    Icon = "moon"
-})
-
---// BUTTON 2
-NightTab:AddButton({
-    Title = "banana cat",
-    Description = "free free",
+MainTab:AddButton({
+    Title = "Button",
+    Description = "This is a button with description and rich text like: PREMIUM",
     Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/tamdznanatv/hubpremumcomback/refs/heads/main/NaNaTVHubcomback.luau"))()
+        print("Button")
     end
 })
 
---// TAB BANANA
-
-local BananaTab = Window:AddTab({
-    Title = "Banana",
-    Icon = "banana"
+MainTab:AddDropdown("Dropdown1", {
+    Title = "Dropdown without description",
+    Values = {
+        "Option 1",
+        "Option 2",
+        "Option 3"
+    },
+    Multi = false,
+    Default = 1
 })
 
-BananaTab:AddSection("Banana Hub")
+MainTab:AddDropdown("Dropdown2", {
+    Title = "Dropdown",
+    Description = "Select Any Values in Dropdown",
+    Values = {
+        "Option 1",
+        "Option 2",
+        "Option 3"
+    },
+    Multi = false,
+    Default = 1
+})
 
-BananaTab:AddButton({
-    Title = "fps Script",
-    Description = "thôi",
+--// =========================
+--// STACK TAB
+--// =========================
+
+local StackTab = Window:AddTab({
+    Title = "Stack",
+    Icon = "layers"
+})
+
+StackTab:AddSection("Scripts")
+
+StackTab:AddButton({
+    Title = "Infinite Yield",
     Callback = function()
-        loadstring(game:HttpGet("https://pastefy.app/OruW5AwY/raw"))()
+        loadstring(game:HttpGet(
+        "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"
+        ))()
     end
 })
 
---// TAB MARU
+--// =========================
+--// ITEMS TAB
+--// =========================
 
-local MaruTab = Window:AddTab({
-    Title = "Maru",
-    Icon = "star"
+local ItemsTab = Window:AddTab({
+    Title = "Items",
+    Icon = "swords"
 })
 
-MaruTab:AddSection("Maru Hub")
+ItemsTab:AddSection("Items")
 
-MaruTab:AddButton({
-    Title = "Maru Script",
-    Description = "test thôi",
+ItemsTab:AddButton({
+    Title = "Get Items",
     Callback = function()
-        repeat wait() until game:IsLoaded() and game.Players.LocalPlayer 
-getgenv().AutoLoad = true --auto load on hop
-getgenv().team = "Pirates" -- Pirates or Marines
-loadstring(game:HttpGet("https://raw.githubusercontent.com/vinh129150/hack/refs/heads/main/Bloxfruits.lua"))()
+        print("Items")
     end
 })
 
---// BOOST TAB
+--// =========================
+--// FRUITS TAB
+--// =========================
 
-local BoostTab = Window:AddTab({
-    Title = "Boost",
-    Icon = "zap"
+local FruitsTab = Window:AddTab({
+    Title = "Fruits",
+    Icon = "apple"
 })
 
-BoostTab:AddSection("FPS & Graphics")
+FruitsTab:AddSection("Fruits")
+
+FruitsTab:AddButton({
+    Title = "Auto Fruits",
+    Callback = function()
+        print("Fruits")
+    end
+})
+
+--// =========================
+--// DUNGEON TAB
+--// =========================
+
+local DungeonTab = Window:AddTab({
+    Title = "Dungeon",
+    Icon = "shield"
+})
+
+DungeonTab:AddSection("Dungeon")
+
+DungeonTab:AddButton({
+    Title = "Auto Dungeon",
+    Callback = function()
+        print("Dungeon")
+    end
+})
+
+--// =========================
+--// LOCALPLAYER TAB
+--// =========================
+
+local PlayerTab = Window:AddTab({
+    Title = "LocalPlayer",
+    Icon = "user"
+})
+
+PlayerTab:AddSection("Player")
+
+PlayerTab:AddSlider("WS", {
+    Title = "WalkSpeed",
+    Default = 16,
+    Min = 16,
+    Max = 200,
+    Rounding = 0,
+    Callback = function(v)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = v
+    end
+})
+
+--// =========================
+--// SETTINGS TAB
+--// =========================
+
+local SettingsTab = Window:AddTab({
+    Title = "Themes",
+    Icon = "palette"
+})
+
+SettingsTab:AddSection("UI Themes")
+
+--// RED THEME
+
+SettingsTab:AddButton({
+    Title = "🔴 Red Theme",
+    Callback = function()
+
+        for _,v in pairs(Window.Root:GetDescendants()) do
+            if v:IsA("Frame") then
+                v.BackgroundColor3 = Color3.fromRGB(170,0,0)
+            end
+        end
+
+    end
+})
+
+--// BLUE THEME
+
+SettingsTab:AddButton({
+    Title = "🔵 Blue Theme",
+    Callback = function()
+
+        for _,v in pairs(Window.Root:GetDescendants()) do
+            if v:IsA("Frame") then
+                v.BackgroundColor3 = Color3.fromRGB(0,85,255)
+            end
+        end
+
+    end
+})
+
+--// GREEN THEME
+
+SettingsTab:AddButton({
+    Title = "🟢 Green Theme",
+    Callback = function()
+
+        for _,v in pairs(Window.Root:GetDescendants()) do
+            if v:IsA("Frame") then
+                v.BackgroundColor3 = Color3.fromRGB(0,170,0)
+            end
+        end
+
+    end
+})
+
+--// PURPLE THEME
+
+SettingsTab:AddButton({
+    Title = "🟣 Purple Theme",
+    Callback = function()
+
+        for _,v in pairs(Window.Root:GetDescendants()) do
+            if v:IsA("Frame") then
+                v.BackgroundColor3 = Color3.fromRGB(85,0,127)
+            end
+        end
+
+    end
+})
+
+--// VIETNAM THEME
+
+SettingsTab:AddButton({
+    Title = "🇻🇳 Vietnam Theme",
+    Callback = function()
+
+        for _,v in pairs(Window.Root:GetDescendants()) do
+            if v:IsA("Frame") then
+                v.BackgroundColor3 = Color3.fromRGB(180,0,0)
+            end
+        end
+
+        if Window.Root:FindFirstChild("VietnamStar") then
+            Window.Root.VietnamStar:Destroy()
+        end
+
+        local Star = Instance.new("TextLabel")
+        Star.Name = "VietnamStar"
+        Star.Parent = Window.Root
+
+        Star.Size = UDim2.new(0,150,0,150)
+        Star.Position = UDim2.new(0.5,-75,0.5,-75)
+
+        Star.BackgroundTransparency = 1
+        Star.Text = "✦"
+        Star.TextScaled = true
+        Star.Font = Enum.Font.GothamBold
+
+        Star.TextColor3 = Color3.fromRGB(255,221,0)
+        Star.TextTransparency = 0.75
+
+    end
+})
+
+--// NOTIFY
+
+Fluent:Notify({
+    Title = "Night Hub",
+    Content = "UI Loaded Successfully",
+    Duration = 5
+})
+
+
 
 --// LOW GRAPHICS
 
@@ -322,7 +492,7 @@ BoostTab:AddButton({
     end
 })
 
-Window:SelectTab(InformationTab)
+Window:SelectTab(MainTab)
 
 --// ANTI AFK (luôn để code này ở cuối) 
 

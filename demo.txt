@@ -1,221 +1,103 @@
---// FLUENT UI
-
+--// UI LIBRARY
 local Fluent = loadstring(game:HttpGet(
 "https://raw.githubusercontent.com/dawid-scripts/Fluent/master/source.lua"
 ))()
 
 --// WINDOW
-
 local Window = Fluent:CreateWindow({
     Title = "PDZ Hub [PREMIUM]",
-    SubTitle = "all script [PREMIUM]",
+    SubTitle = "PREMIUM SCRIPT",
     TabWidth = 160,
-    Size = UDim2.fromOffset(450, 330),
+    Size = UDim2.fromOffset(460,330),
     Acrylic = false,
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.RightControl
 })
 
---// ROUND TOGGLE UI BUTTON
+--// TOGGLE BUTTON
 
 local ToggleGui = Instance.new("ScreenGui")
 ToggleGui.Name = "ToggleGui"
-ToggleGui.Parent = game.CoreGui
+ToggleGui.Parent = gethui and gethui() or game.CoreGui
+ToggleGui.ResetOnSpawn = false
 
 local ToggleButton = Instance.new("ImageButton")
 ToggleButton.Parent = ToggleGui
 
--- size nút
-ToggleButton.Size = UDim2.new(0,50,0,50)
-
--- vị trí
+ToggleButton.Size = UDim2.new(0,45,0,45)
 ToggleButton.Position = UDim2.new(0,15,0.5,-25)
 
--- ảnh
 ToggleButton.Image = "rbxassetid://3864411488359387"
--- thay ID ảnh tại đây
 
--- nền trong suốt
 ToggleButton.BackgroundColor3 = Color3.fromRGB(255,255,255)
-ToggleButton.BackgroundTransparency = 0
 
--- bo tròn
-local Corner = Instance.new("UICorner")
-Corner.CornerRadius = UDim.new(1,0)
-Corner.Parent = ToggleButton
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(1,0)
+UICorner.Parent = ToggleButton
 
--- viền
 local Stroke = Instance.new("UIStroke")
 Stroke.Parent = ToggleButton
 Stroke.Thickness = 2
 Stroke.Color = Color3.fromRGB(0,170,255)
 
--- kéo nút
 ToggleButton.Active = true
 ToggleButton.Draggable = true
 
--- bật/tắt ui
-local Visible = true
+local UiOpen = true
 
 ToggleButton.MouseButton1Click:Connect(function()
 
-    Visible = not Visible
+    UiOpen = not UiOpen
 
-    Window.Root.Visible = Visible
+    for _,v in pairs(game.CoreGui:GetChildren()) do
+        if v.Name == "Fluent" then
+            v.Enabled = UiOpen
+        end
+    end
 
 end)
 
-
---// =========================
 --// MAIN TAB
---// =========================
 
 local MainTab = Window:AddTab({
     Title = "Main",
     Icon = "home"
 })
 
-MainTab:AddSection("BANANA CAT HUB")
+MainTab:AddSection("Execute Script")
 
 MainTab:AddButton({
-    Title = "BANANA",
-    Description = "main"
+    Title = "Execute Script 1",
+    Description = "Run script",
     Callback = function()
-        repeat wait() until game:IsLoaded() and game.Players.LocalPlayer 
-        getgenv().Key = "DÁN KEY VÀO" 
-        loadstring(game:HttpGet(
-        "https://raw.githubusercontent.com/obiiyeuem/vthangsitink/main/BananaHub.lua"))()
+
+        loadstring(game:HttpGet("LINK_SCRIPT"))()
+
     end
 })
-
-MainTab:AddSection("MARU HUB")
 
 MainTab:AddButton({
-    Title = "MARU",
-    Description = "main"
+    Title = "Execute Script 2",
+    Description = "Run script",
     Callback = function()
-        print(hehe)
+
+        print("Executed")
+
     end
 })
 
-MainTab:AddSection("NIGHT HUB")
+--// THEME TAB
 
-MainTab:AddButton({
-    Title = "Night",
-    Description = "main",
-    Callback = function()
-        repeat wait() until game:IsLoaded()
-        script_key = "DÁN KEY VÀO"
-        loadstring(game:HttpGet(
-        "https://raw.githubusercontent.com/WhiteX1208/Scripts/refs/heads/main/BF-Beta.lua"))()
-    end
-})
-
---// =========================
---// TAB
---// =========================
-
-local StackTab = Window:AddTab({
-    Title = "KAITUN",
-    Icon = "layers"
-})
-
-StackTab:AddSection("BANANA")
-
-StackTab:AddButton({
-    Title = "BANANA CAT",
-    Callback = function()
-        loadstring(game:HttpGet(
-        "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"
-        ))()
-    end
-})
-
---// =========================
---// TAB
---// =========================
-
-local ItemsTab = Window:AddTab({
-    Title = "AUTO BOUNTY",
-    Icon = "swords"
-})
-
-ItemsTab:AddSection("MARU")
-
-ItemsTab:AddButton({
-    Title = "M1",
-    Callback = function()
-        print("Items")
-    end
-})
-
---// =========================
---// TAB
---// =========================
-
-local FruitsTab = Window:AddTab({
-    Title = "KAITUN V4",
-    Icon = "apple"
-})
-
-FruitsTab:AddSection("BANANA")
-
-FruitsTab:AddButton({
-    Title = "BANANA",
-    Callback = function()
-        print("Fruits")
-    end
-})
-
---// =========================
---// TAB
---// =========================
-
-local DungeonTab = Window:AddTab({
-    Title = "KAITUN LEVI",
-    Icon = "shield"
-})
-
-DungeonTab:AddSection("BANANA")
-
-DungeonTab:AddButton({
-    Title = "LEVI",
-    Callback = function()
-        print("Dungeon")
-    end
-})
-
-
---// =========================
---// SETTINGS TAB
---// =========================
-
-local SettingsTab = Window:AddTab({
+local ThemeTab = Window:AddTab({
     Title = "Themes",
     Icon = "palette"
 })
 
-SettingsTab:AddSection("UI Themes")
+ThemeTab:AddSection("UI Colors")
 
---// RED THEME
-
-SettingsTab:AddButton({
-    Title = "🔴 Red Theme",
-    Callback = function()
-
-        for _,v in pairs(Window.Root:GetDescendants()) do
-            if v:IsA("Frame") then
-                v.BackgroundColor3 = Color3.fromRGB(170,0,0)
-            end
-        end
-
-    end
-})
-
---// BLUE THEME
-
-SettingsTab:AddButton({
-    Title = "🔵 Blue Theme",
+-- XANH DƯƠNG
+ThemeTab:AddButton({
+    Title = "Blue Theme",
     Callback = function()
 
         for _,v in pairs(Window.Root:GetDescendants()) do
@@ -227,10 +109,23 @@ SettingsTab:AddButton({
     end
 })
 
---// GREEN THEME
+-- TÍM
+ThemeTab:AddButton({
+    Title = "Purple Theme",
+    Callback = function()
 
-SettingsTab:AddButton({
-    Title = "🟢 Green Theme",
+        for _,v in pairs(Window.Root:GetDescendants()) do
+            if v:IsA("Frame") then
+                v.BackgroundColor3 = Color3.fromRGB(170,0,255)
+            end
+        end
+
+    end
+})
+
+-- XANH LÁ
+ThemeTab:AddButton({
+    Title = "Green Theme",
     Callback = function()
 
         for _,v in pairs(Window.Root:GetDescendants()) do
@@ -242,22 +137,164 @@ SettingsTab:AddButton({
     end
 })
 
---// PURPLE THEME
-
-SettingsTab:AddButton({
-    Title = "🟣 Purple Theme",
+-- ĐỎ
+ThemeTab:AddButton({
+    Title = "Red Theme",
     Callback = function()
 
         for _,v in pairs(Window.Root:GetDescendants()) do
             if v:IsA("Frame") then
-                v.BackgroundColor3 = Color3.fromRGB(85,0,127)
+                v.BackgroundColor3 = Color3.fromRGB(170,0,0)
             end
         end
 
     end
 })
 
+-- ĐEN
+ThemeTab:AddButton({
+    Title = "Black Theme",
+    Callback = function()
 
+        for _,v in pairs(Window.Root:GetDescendants()) do
+            if v:IsA("Frame") then
+                v.BackgroundColor3 = Color3.fromRGB(25,25,25)
+            end
+        end
+
+    end
+})
+
+-- TRẮNG
+ThemeTab:AddButton({
+    Title = "White Theme",
+    Callback = function()
+
+        for _,v in pairs(Window.Root:GetDescendants()) do
+            if v:IsA("Frame") then
+                v.BackgroundColor3 = Color3.fromRGB(255,255,255)
+            end
+        end
+
+    end
+})
+
+--// SETTINGS TAB
+
+local SettingsTab = Window:AddTab({
+    Title = "Settings",
+    Icon = "settings"
+})
+
+SettingsTab:AddSection("Performance")
+
+--// FPS BOOST
+
+SettingsTab:AddButton({
+    Title = "FPS Boost",
+    Description = "Boost FPS & Reduce Ping",
+    Callback = function()
+
+        local lighting = game:GetService("Lighting")
+
+        lighting.GlobalShadows = false
+        lighting.FogEnd = 9e9
+        lighting.Brightness = 0
+
+        settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+
+        for i,v in pairs(game:GetDescendants()) do
+
+            if v:IsA("Part")
+            or v:IsA("Union")
+            or v:IsA("MeshPart") then
+
+                v.Material = Enum.Material.Plastic
+                v.Reflectance = 0
+
+            end
+
+            if v:IsA("Decal")
+            or v:IsA("Texture") then
+
+                v.Transparency = 1
+
+            end
+
+            if v:IsA("ParticleEmitter")
+            or v:IsA("Trail") then
+
+                v.Enabled = false
+
+            end
+
+        end
+
+    end
+})
+
+--// ANTI LAG
+
+SettingsTab:AddButton({
+    Title = "Anti Lag",
+    Description = "Remove unnecessary effects",
+    Callback = function()
+
+        for _,v in pairs(game:GetDescendants()) do
+
+            if v:IsA("Explosion")
+            or v:IsA("Fire")
+            or v:IsA("Smoke")
+            or v:IsA("Sparkles") then
+
+                v:Destroy()
+
+            end
+
+        end
+
+    end
+})
+
+--// LOW GRAPHICS
+
+SettingsTab:AddButton({
+    Title = "Low Graphics",
+    Description = "Dark & Smooth Graphics",
+    Callback = function()
+
+        local lighting = game:GetService("Lighting")
+
+        lighting.Brightness = 1
+        lighting.GlobalShadows = false
+        lighting.FogEnd = 500
+        lighting.OutdoorAmbient = Color3.fromRGB(80,80,80)
+
+        settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+
+    end
+})
+
+--// REMOVE TEXTURE
+
+SettingsTab:AddButton({
+    Title = "Remove Texture",
+    Description = "Delete all textures",
+    Callback = function()
+
+        for _,v in pairs(game:GetDescendants()) do
+
+            if v:IsA("Texture")
+            or v:IsA("Decal") then
+
+                v:Destroy()
+
+            end
+
+        end
+
+    end
+})
 
 --// ANTI AFK (luôn để code này ở cuối) 
 
@@ -270,3 +307,9 @@ Players.LocalPlayer.Idled:Connect(function()
     task.wait(1)
     VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
 end)
+
+Fluent:Notify({
+    Title = "PREMIUM IS COMING",
+    Content = "PREMIUM HUB Loaded",
+    Duration = 5
+})

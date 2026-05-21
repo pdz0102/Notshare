@@ -27,7 +27,7 @@ ToggleButton.Parent = ToggleGui
 ToggleButton.Size = UDim2.new(0,45,0,45)
 ToggleButton.Position = UDim2.new(0,15,0.5,-25)
 
-ToggleButton.Image = "rbxassetid://3864411488359387"
+ToggleButton.Image = "rbxassetid://89311262811917"
 
 ToggleButton.BackgroundColor3 = Color3.fromRGB(255,255,255)
 

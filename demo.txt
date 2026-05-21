@@ -8,9 +8,9 @@ local Fluent = loadstring(game:HttpGet(
 
 local Window = Fluent:CreateWindow({
     Title = "PDZ Hub [PREMIUM]",
-    SubTitlte = "all script [PREMIUM]",
+    SubTitle = "all script [PREMIUM]",
     TabWidth = 160,
-    Size = UDim2.fromOffset(500, 330),
+    Size = UDim2.fromOffset(450, 330),
     Acrylic = false,
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.RightControl
@@ -75,56 +75,38 @@ local MainTab = Window:AddTab({
     Icon = "home"
 })
 
-MainTab:AddSection("Main Seperator")
-
-MainTab:AddToggle("Toggle1", {
-    Title = "Toggle without desc but enable",
-    Default = true,
-    Callback = function(v)
-        print(v)
-    end
-})
-
-MainTab:AddToggle("Toggle2", {
-    Title = "Toggle",
-    Description = "This is toggle with description",
-    Default = false,
-    Callback = function(v)
-        print(v)
-    end
-})
-
-MainTab:AddSection("Other Features")
+MainTab:AddSection("BANANA CAT HUB")
 
 MainTab:AddButton({
-    Title = "Button",
-    Description = "This is a button with description and rich text like: PREMIUM",
+    Title = "BANANA",
+    Description = "main"
     Callback = function()
-        print("Button")
+        repeat wait() until game:IsLoaded() and game.Players.LocalPlayer 
+getgenv().Key = "DÁN KEY VÀO" 
+loadstring(game:HttpGet("https://raw.githubusercontent.com/obiiyeuem/vthangsitink/main/BananaHub.lua"))()
     end
 })
 
-MainTab:AddDropdown("Dropdown1", {
-    Title = "Dropdown without description",
-    Values = {
-        "CAK V1",
-        "CAK V2",
-        "CAK V3"
-    },
-    Multi = false,
-    Default = 1
+MainTab:AddSection("MARU HUB")
+
+MainTab:AddButton({
+    Title = "MARU",
+    Description = " main"
+    Callback = function()
+        
+    end
 })
 
-MainTab:AddDropdown("Dropdown2", {
-    Title = "Dropdown",
-    Description = "Select Any Values in Dropdown",
-    Values = {
-        "Option 1",
-        "Option 2",
-        "Option 3"
-    },
-    Multi = false,
-    Default = 1
+MainTab:AddSection("NIGHT HUB")
+
+MainTab:AddButton({
+    Title = "Night",
+    Description = "main",
+    Callback = function()
+        repeat wait() until game:IsLoaded()
+script_key = "DÁN KEY VÀO"
+loadstring(game:HttpGet("https://raw.githubusercontent.com/WhiteX1208/Scripts/refs/heads/main/BF-Beta.lua"))()
+    end
 })
 
 --// =========================
@@ -136,10 +118,10 @@ local StackTab = Window:AddTab({
     Icon = "layers"
 })
 
-StackTab:AddSection("Scripts")
+StackTab:AddSection("BANANA")
 
 StackTab:AddButton({
-    Title = "Infinite Yield",
+    Title = "BANANA CAT",
     Callback = function()
         loadstring(game:HttpGet(
         "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"

@@ -1,320 +1,722 @@
---// UI LIBRARY
-local Fluent = loadstring(game:HttpGet(
-"https://raw.githubusercontent.com/dawid-scripts/Fluent/master/source.lua"
-))()
+--// BANANA CAT HUB MOBILE UI
+--// FULL REMAKE
+--// ROBLOX LUA
 
---// WINDOW
-local Window = Fluent:CreateWindow({
-    Title = "PDZ Hub [PREMIUM]",
-    SubTitle = "PREMIUM SCRIPT",
-    TabWidth = 160,
-    Size = UDim2.fromOffset(460,330),
-    Acrylic = false,
-    Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.RightControl
-})
+repeat wait() until game:IsLoaded()
 
---// TOGGLE BUTTON FIXED
+--====================================================
+-- SERVICES
+--====================================================
 
-local CoreGui = gethui and gethui() or game.CoreGui
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
 
-local ToggleGui = Instance.new("ScreenGui")
-ToggleGui.Name = "ToggleGui"
-ToggleGui.ResetOnSpawn = false
-ToggleGui.Parent = CoreGui
+local Player = Players.LocalPlayer
+
+--====================================================
+-- REMOVE OLD
+--====================================================
+
+pcall(function()
+	game.CoreGui.BananaMobileHub:Destroy()
+end)
+
+--====================================================
+-- GUI
+--====================================================
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "BananaMobileHub"
+ScreenGui.Parent = game.CoreGui
+ScreenGui.ResetOnSpawn = false
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+--====================================================
+-- TOGGLE BUTTON
+--====================================================
 
 local ToggleButton = Instance.new("ImageButton")
-ToggleButton.Parent = ToggleGui
+ToggleButton.Parent = ScreenGui
+ToggleButton.Size = UDim2.new(0,65,0,65)
+ToggleButton.Position = UDim2.new(0,15,0.5,-32)
+ToggleButton.BackgroundTransparency = 1
+ToggleButton.Image = "rbxassetid://10734950309"
 
-ToggleButton.Size = UDim2.new(0,45,0,45)
-ToggleButton.Position = UDim2.new(0,15,0.5,-25)
+Instance.new("UICorner", ToggleButton).CornerRadius = UDim.new(1,0)
 
-ToggleButton.Image = "rbxassetid://89311262811917"
+local ToggleStroke = Instance.new("UIStroke", ToggleButton)
+ToggleStroke.Color = Color3.fromRGB(255,255,255)
+ToggleStroke.Thickness = 2
 
-ToggleButton.BackgroundColor3 = Color3.fromRGB(255,255,255)
-ToggleButton.BackgroundTransparency = 0
+--====================================================
+-- MAIN GUI
+--====================================================
 
-local Corner = Instance.new("UICorner")
-Corner.Parent = ToggleButton
-Corner.CornerRadius = UDim.new(1,0)
+local Main = Instance.new("Frame")
+Main.Parent = ScreenGui
+Main.Size = UDim2.new(0,720,0,430)
+Main.Position = UDim2.new(0.5,-360,0.5,-215)
+Main.BackgroundColor3 = Color3.fromRGB(15,15,15)
+Main.BorderSizePixel = 0
+Main.Active = true
+Main.Draggable = true
 
-local Stroke = Instance.new("UIStroke")
-Stroke.Parent = ToggleButton
-Stroke.Color = Color3.fromRGB(0,170,255)
-Stroke.Thickness = 2
+Instance.new("UICorner", Main).CornerRadius = UDim.new(0,15)
 
-ToggleButton.Active = true
-ToggleButton.Draggable = true
+local MainStroke = Instance.new("UIStroke", Main)
+MainStroke.Color = Color3.fromRGB(50,50,50)
 
---// FIX TOGGLE
+--====================================================
+-- TITLE
+--====================================================
 
-local Open = true
+local Title = Instance.new("TextLabel")
+Title.Parent = Main
+Title.BackgroundTransparency = 1
+Title.Position = UDim2.new(0,15,0,5)
+Title.Size = UDim2.new(1,0,0,50)
+
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 24
+Title.TextXAlignment = Enum.TextXAlignment.Left
+Title.RichText = true
+
+Title.Text =
+'<font color="rgb(255,210,70)">Banana</font> Cat Hub'
+
+Title.TextColor3 = Color3.new(1,1,1)
+
+--====================================================
+-- SIDEBAR
+--====================================================
+
+local Sidebar = Instance.new("Frame")
+Sidebar.Parent = Main
+Sidebar.Position = UDim2.new(0,10,0,60)
+Sidebar.Size = UDim2.new(0,180,1,-70)
+
+Sidebar.BackgroundColor3 = Color3.fromRGB(20,20,20)
+Sidebar.BorderSizePixel = 0
+
+Instance.new("UICorner", Sidebar)
+
+local SidebarLayout = Instance.new("UIListLayout", Sidebar)
+SidebarLayout.Padding = UDim.new(0,8)
+SidebarLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+
+--====================================================
+-- CONTENT
+--====================================================
+
+local Content = Instance.new("Frame")
+Content.Parent = Main
+Content.Position = UDim2.new(0,200,0,60)
+Content.Size = UDim2.new(1,-210,1,-70)
+Content.BackgroundTransparency = 1
+
+--====================================================
+-- CREATE TAB
+--====================================================
+
+local function CreateTab(name)
+
+	local Button = Instance.new("TextButton")
+	Button.Parent = Sidebar
+	Button.Size = UDim2.new(1,-10,0,45)
+
+	Button.BackgroundColor3 = Color3.fromRGB(30,30,30)
+	Button.Text = name
+	Button.Font = Enum.Font.GothamBold
+	Button.TextSize = 18
+	Button.TextColor3 = Color3.new(1,1,1)
+	Button.BorderSizePixel = 0
+
+	Instance.new("UICorner", Button)
+
+	local Page = Instance.new("ScrollingFrame")
+	Page.Parent = Content
+	Page.Size = UDim2.new(1,0,1,0)
+	Page.BackgroundTransparency = 1
+	Page.ScrollBarThickness = 3
+	Page.CanvasSize = UDim2.new(0,0,0,0)
+	Page.Visible = false
+
+	local Layout = Instance.new("UIListLayout", Page)
+	Layout.Padding = UDim.new(0,10)
+
+	Layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+		Page.CanvasSize = UDim2.new(0,0,0,Layout.AbsoluteContentSize.Y + 15)
+	end)
+
+	Button.MouseButton1Click:Connect(function()
+
+		for _,v in pairs(Content:GetChildren()) do
+			if v:IsA("ScrollingFrame") then
+				v.Visible = false
+			end
+		end
+
+		Page.Visible = true
+	end)
+
+	return Page
+end
+
+--====================================================
+-- CATEGORY
+--====================================================
+
+local function CreateCategory(parent, title)
+
+	local Category = Instance.new("Frame")
+	Category.Parent = parent
+	Category.Size = UDim2.new(1,-10,0,50)
+	Category.BackgroundColor3 = Color3.fromRGB(10,10,10)
+	Category.BorderSizePixel = 0
+	Category.ClipsDescendants = true
+
+	Instance.new("UICorner", Category)
+
+	local Open = false
+
+	-- TITLE
+	local Title = Instance.new("TextButton")
+	Title.Parent = Category
+	Title.Size = UDim2.new(1,0,0,50)
+
+	Title.BackgroundColor3 = Color3.fromRGB(15,15,15)
+	Title.BorderSizePixel = 0
+
+	Title.Text = title
+	Title.Font = Enum.Font.GothamBold
+	Title.TextSize = 22
+	Title.TextColor3 = Color3.new(1,1,1)
+
+	Instance.new("UICorner", Title)
+
+	-- GOLD LINE
+	local Line = Instance.new("Frame")
+	Line.Parent = Title
+	Line.Size = UDim2.new(1,0,0,2)
+	Line.Position = UDim2.new(0,0,1,-2)
+
+	Line.BackgroundColor3 = Color3.fromRGB(255,190,60)
+	Line.BorderSizePixel = 0
+
+	-- CONTENT
+	local Content = Instance.new("Frame")
+	Content.Parent = Category
+	Content.Position = UDim2.new(0,0,0,55)
+	Content.Size = UDim2.new(1,0,0,0)
+	Content.BackgroundTransparency = 1
+
+	local Layout = Instance.new("UIListLayout", Content)
+	Layout.Padding = UDim.new(0,8)
+
+	Layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+
+		Content.Size = UDim2.new(
+			1,
+			0,
+			0,
+			Layout.AbsoluteContentSize.Y
+		)
+
+		if Open then
+
+			Category.Size = UDim2.new(
+				1,
+				-10,
+				0,
+				Layout.AbsoluteContentSize.Y + 65
+			)
+		end
+	end)
+
+	Title.MouseButton1Click:Connect(function()
+
+		Open = not Open
+
+		if Open then
+
+			Category:TweenSize(
+				UDim2.new(
+					1,
+					-10,
+					0,
+					Layout.AbsoluteContentSize.Y + 65
+				),
+				"Out",
+				"Quad",
+				0.25,
+				true
+			)
+
+		else
+
+			Category:TweenSize(
+				UDim2.new(1,-10,0,50),
+				"Out",
+				"Quad",
+				0.25,
+				true
+			)
+		end
+	end)
+
+	return Content
+end
+
+--====================================================
+-- BUTTON
+--====================================================
+
+local function CreateButton(parent, text, callback)
+
+	local Holder = Instance.new("Frame")
+	Holder.Parent = parent
+	Holder.Size = UDim2.new(1,0,0,65)
+
+	Holder.BackgroundColor3 = Color3.fromRGB(20,20,20)
+	Holder.BorderSizePixel = 0
+
+	Instance.new("UICorner", Holder)
+
+	local Label = Instance.new("TextLabel")
+	Label.Parent = Holder
+	Label.BackgroundTransparency = 1
+	Label.Position = UDim2.new(0,15,0,0)
+	Label.Size = UDim2.new(1,-170,1,0)
+
+	Label.Font = Enum.Font.GothamBold
+	Label.Text = text
+	Label.TextSize = 20
+	Label.TextXAlignment = Enum.TextXAlignment.Left
+	Label.TextColor3 = Color3.new(1,1,1)
+
+	local Button = Instance.new("TextButton")
+	Button.Parent = Holder
+	Button.Size = UDim2.new(0,120,0,42)
+	Button.Position = UDim2.new(1,-140,0.5,-21)
+
+	Button.BackgroundColor3 = Color3.fromRGB(230,200,120)
+	Button.Text = "Click"
+
+	Button.Font = Enum.Font.GothamBold
+	Button.TextSize = 20
+	Button.TextColor3 = Color3.fromRGB(40,30,0)
+
+	Button.BorderSizePixel = 0
+
+	Instance.new("UICorner", Button)
+
+	Button.MouseButton1Click:Connect(function()
+		pcall(callback)
+	end)
+end
+
+--====================================================
+-- TOGGLE
+--====================================================
+
+local function CreateToggle(parent, text, callback)
+
+	local Holder = Instance.new("Frame")
+	Holder.Parent = parent
+	Holder.Size = UDim2.new(1,0,0,55)
+
+	Holder.BackgroundColor3 = Color3.fromRGB(20,20,20)
+	Holder.BorderSizePixel = 0
+
+	Instance.new("UICorner", Holder)
+
+	local Label = Instance.new("TextLabel")
+	Label.Parent = Holder
+	Label.BackgroundTransparency = 1
+	Label.Position = UDim2.new(0,15,0,0)
+	Label.Size = UDim2.new(1,-80,1,0)
+
+	Label.Font = Enum.Font.GothamBold
+	Label.Text = text
+	Label.TextSize = 20
+	Label.TextXAlignment = Enum.TextXAlignment.Left
+	Label.TextColor3 = Color3.new(1,1,1)
+
+	local Toggle = Instance.new("TextButton")
+	Toggle.Parent = Holder
+	Toggle.Size = UDim2.new(0,35,0,35)
+	Toggle.Position = UDim2.new(1,-50,0.5,-17)
+
+	Toggle.BackgroundColor3 = Color3.fromRGB(25,25,25)
+	Toggle.Text = ""
+	Toggle.BorderSizePixel = 0
+
+	local Stroke = Instance.new("UIStroke", Toggle)
+	Stroke.Color = Color3.fromRGB(255,190,60)
+	Stroke.Thickness = 2
+
+	Instance.new("UICorner", Toggle)
+
+	local Enabled = false
+
+	Toggle.MouseButton1Click:Connect(function()
+
+		Enabled = not Enabled
+
+		if Enabled then
+			Toggle.BackgroundColor3 = Color3.fromRGB(255,190,60)
+		else
+			Toggle.BackgroundColor3 = Color3.fromRGB(25,25,25)
+		end
+
+		pcall(function()
+			callback(Enabled)
+		end)
+	end)
+end
+
+---- tab nhỏ ----
+
+local function CreateSection(parent, title)
+
+	local Section = Instance.new("Frame")
+	Section.Parent = parent
+	Section.Size = UDim2.new(1,-10,0,45)
+	Section.BackgroundColor3 = Color3.fromRGB(8,8,8)
+	Section.BorderSizePixel = 0
+	Section.ClipsDescendants = true
+
+	Instance.new("UICorner", Section).CornerRadius = UDim.new(0,10)
+
+	-- HEADER
+	local Header = Instance.new("TextButton")
+	Header.Parent = Section
+	Header.Size = UDim2.new(1,0,0,45)
+
+	Header.BackgroundColor3 = Color3.fromRGB(10,10,10)
+	Header.BorderSizePixel = 0
+
+	Header.Text = title
+	Header.Font = Enum.Font.GothamBold
+	Header.TextSize = 21
+	Header.TextColor3 = Color3.new(1,1,1)
+
+	Instance.new("UICorner", Header).CornerRadius = UDim.new(0,10)
+
+	-- GOLD LINE
+	local Line = Instance.new("Frame")
+	Line.Parent = Header
+	Line.AnchorPoint = Vector2.new(0.5,1)
+	Line.Position = UDim2.new(0.5,0,1,-1)
+
+	Line.Size = UDim2.new(0.92,0,0,2)
+
+	Line.BackgroundColor3 = Color3.fromRGB(255,190,60)
+	Line.BorderSizePixel = 0
+
+	-- CONTENT
+	local Container = Instance.new("Frame")
+	Container.Parent = Section
+	Container.Position = UDim2.new(0,0,0,52)
+	Container.Size = UDim2.new(1,0,0,0)
+	Container.BackgroundTransparency = 1
+
+	local Layout = Instance.new("UIListLayout")
+	Layout.Parent = Container
+	Layout.Padding = UDim.new(0,8)
+
+	local Open = false
+
+	local function UpdateSize()
+
+		local Y = Layout.AbsoluteContentSize.Y
+
+		Container.Size = UDim2.new(1,0,0,Y)
+
+		if Open then
+
+			Section:TweenSize(
+				UDim2.new(1,-10,0,Y + 60),
+				"Out",
+				"Quad",
+				0.25,
+				true
+			)
+
+		end
+	end
+
+	Layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(UpdateSize)
+
+	Header.MouseButton1Click:Connect(function()
+
+		Open = not Open
+
+		if Open then
+
+			UpdateSize()
+
+		else
+
+			Section:TweenSize(
+				UDim2.new(1,-10,0,45),
+				"Out",
+				"Quad",
+				0.25,
+				true
+			)
+		end
+	end)
+
+	return Container
+end
+
+--====================================================
+-- TABS
+--====================================================
+
+local MainTab = CreateTab("Main")
+local AutoBounty = CreateTab("Auto Bounty")
+local LeviTab = CreateTab("Kaitun Levi")
+local V4Tab = CreateTab("Kaitun V4")
+local OtherTab = CreateTab("Khác")
+
+MainTab.Visible = true
+
+--====================================================
+-- MAIN CATEGORY
+--====================================================
+
+local MainCategory = CreateCategory(MainTab,"Main Scripts")
+
+CreateButton(MainCategory,"Banana",function()
+	loadstring(game:HttpGet("LINK"))()
+end)
+
+CreateButton(MainCategory,"Night Hub",function()
+	loadstring(game:HttpGet("LINK"))()
+end)
+
+CreateButton(MainCategory,"Maru",function()
+	loadstring(game:HttpGet("LINK"))()
+end)
+
+--====================================================
+-- AUTO BOUNTY
+--====================================================
+
+local BountyCategory = CreateCategory(AutoBounty,"Auto Bounty")
+
+CreateToggle(BountyCategory,"M1",function(v)
+	print(v)
+end)
+
+CreateToggle(BountyCategory,"Skills",function(v)
+	print(v)
+end)
+
+--====================================================
+-- LEVI
+--====================================================
+
+local LeviCategory = CreateCategory(LeviTab,"Levi Scripts")
+
+CreateButton(LeviCategory,"Night",function()
+	loadstring(game:HttpGet("LINK"))()
+end)
+
+CreateButton(LeviCategory,"Banana",function()
+	loadstring(game:HttpGet("LINK"))()
+end)
+
+--====================================================
+-- V4
+--====================================================
+
+local V4Category = CreateCategory(V4Tab,"V4 Scripts")
+
+CreateButton(V4Category,"Night",function()
+	loadstring(game:HttpGet("LINK"))()
+end)
+
+CreateButton(V4Category,"Banana",function()
+	loadstring(game:HttpGet("LINK"))()
+end)
+
+--====================================================
+-- OTHER
+--====================================================
+
+local OtherCategory = CreateCategory(OtherTab,"Other")
+
+CreateToggle(OtherCategory,"Example Toggle",function(v)
+	print(v)
+end)
+
+--====================================================
+-- INFO PANEL
+--====================================================
+
+local Notify = Instance.new("Frame")
+Notify.Parent = ScreenGui
+Notify.Size = UDim2.new(0,650,0,170)
+Notify.Position = UDim2.new(0.5,-325,0,50)
+
+Notify.BackgroundColor3 = Color3.fromRGB(35,35,40)
+Notify.BorderSizePixel = 0
+
+Instance.new("UICorner", Notify).CornerRadius = UDim.new(0,15)
+
+local Icon = Instance.new("ImageLabel")
+Icon.Parent = Notify
+Icon.BackgroundTransparency = 1
+Icon.Size = UDim2.new(0,60,0,60)
+Icon.Position = UDim2.new(0,20,0,18)
+Icon.Image = "rbxassetid://10734950309"
+
+local NotifyTitle = Instance.new("TextLabel")
+NotifyTitle.Parent = Notify
+NotifyTitle.BackgroundTransparency = 1
+NotifyTitle.Position = UDim2.new(0,95,0,12)
+NotifyTitle.Size = UDim2.new(1,-170,0,45)
+
+NotifyTitle.Font = Enum.Font.GothamBold
+NotifyTitle.TextSize = 24
+NotifyTitle.TextXAlignment = Enum.TextXAlignment.Left
+NotifyTitle.RichText = true
+
+NotifyTitle.Text =
+'<font color="rgb(255,210,70)">Banana</font> Cat Hub UI Library'
+
+NotifyTitle.TextColor3 = Color3.new(1,1,1)
+
+local Desc = Instance.new("TextLabel")
+Desc.Parent = Notify
+Desc.BackgroundTransparency = 1
+Desc.Position = UDim2.new(0,25,0,70)
+Desc.Size = UDim2.new(1,-50,1,-80)
+
+Desc.Font = Enum.Font.GothamBold
+Desc.TextSize = 20
+Desc.TextWrapped = true
+Desc.TextXAlignment = Enum.TextXAlignment.Left
+Desc.TextYAlignment = Enum.TextYAlignment.Top
+
+Desc.TextColor3 = Color3.new(1,1,1)
+
+Desc.Text =
+"The UI automatically hides once executed.\nPress the button at the bottom-left of the screen to show the GUI."
+
+local Close = Instance.new("TextButton")
+Close.Parent = Notify
+Close.BackgroundTransparency = 1
+Close.Position = UDim2.new(1,-65,0,10)
+Close.Size = UDim2.new(0,50,0,50)
+
+Close.Font = Enum.Font.GothamBold
+Close.Text = "✕"
+Close.TextSize = 42
+Close.TextColor3 = Color3.new(1,1,1)
+
+Close.MouseButton1Click:Connect(function()
+
+	Notify:TweenPosition(
+		UDim2.new(0.5,-325,-1,0),
+		"Out",
+		"Quad",
+		0.35,
+		true
+	)
+
+	wait(0.4)
+
+	Notify:Destroy()
+
+end)
+
+--====================================================
+-- TOGGLE GUI
+--====================================================
+
+local Opened = true
 
 ToggleButton.MouseButton1Click:Connect(function()
 
-    Open = not Open
+	Opened = not Opened
 
-    pcall(function()
+	Main.Visible = Opened
 
-        Window:Minimize(not Open)
+	if Opened then
 
-    end)
+		TweenService:Create(
+			ToggleButton,
+			TweenInfo.new(0.2),
+			{Size = UDim2.new(0,65,0,65)}
+		):Play()
 
+	else
+
+		TweenService:Create(
+			ToggleButton,
+			TweenInfo.new(0.2),
+			{Size = UDim2.new(0,80,0,80)}
+		):Play()
+
+	end
 end)
 
---// MAIN TAB
-
-local MainTab = Window:AddTab({
-    Title = "Main",
-    Icon = "home"
-})
-
-MainTab:AddSection("Execute Script")
-
-MainTab:AddButton({
-    Title = "Execute Script 1",
-    Description = "Run script",
-    Callback = function()
-
-        loadstring(game:HttpGet("LINK_SCRIPT"))()
-
-    end
-})
-
-MainTab:AddButton({
-    Title = "Execute Script 2",
-    Description = "Run script",
-    Callback = function()
-
-        print("Executed")
-
-    end
-})
-
---// THEME TAB
-
-local ThemeTab = Window:AddTab({
-    Title = "Themes",
-    Icon = "palette"
-})
-
-ThemeTab:AddSection("UI Colors")
-
--- XANH DƯƠNG
-ThemeTab:AddButton({
-    Title = "Blue Theme",
-    Callback = function()
-
-        for _,v in pairs(Window.Root:GetDescendants()) do
-            if v:IsA("Frame") then
-                v.BackgroundColor3 = Color3.fromRGB(0,85,255)
-            end
-        end
-
-    end
-})
-
--- TÍM
-ThemeTab:AddButton({
-    Title = "Purple Theme",
-    Callback = function()
-
-        for _,v in pairs(Window.Root:GetDescendants()) do
-            if v:IsA("Frame") then
-                v.BackgroundColor3 = Color3.fromRGB(170,0,255)
-            end
-        end
-
-    end
-})
-
--- XANH LÁ
-ThemeTab:AddButton({
-    Title = "Green Theme",
-    Callback = function()
-
-        for _,v in pairs(Window.Root:GetDescendants()) do
-            if v:IsA("Frame") then
-                v.BackgroundColor3 = Color3.fromRGB(0,170,0)
-            end
-        end
-
-    end
-})
-
--- ĐỎ
-ThemeTab:AddButton({
-    Title = "Red Theme",
-    Callback = function()
-
-        for _,v in pairs(Window.Root:GetDescendants()) do
-            if v:IsA("Frame") then
-                v.BackgroundColor3 = Color3.fromRGB(170,0,0)
-            end
-        end
-
-    end
-})
-
--- ĐEN
-ThemeTab:AddButton({
-    Title = "Black Theme",
-    Callback = function()
-
-        for _,v in pairs(Window.Root:GetDescendants()) do
-            if v:IsA("Frame") then
-                v.BackgroundColor3 = Color3.fromRGB(25,25,25)
-            end
-        end
-
-    end
-})
-
--- TRẮNG
-ThemeTab:AddButton({
-    Title = "White Theme",
-    Callback = function()
-
-        for _,v in pairs(Window.Root:GetDescendants()) do
-            if v:IsA("Frame") then
-                v.BackgroundColor3 = Color3.fromRGB(255,255,255)
-            end
-        end
-
-    end
-})
-
---// SETTINGS TAB
-
-local SettingsTab = Window:AddTab({
-    Title = "Settings",
-    Icon = "settings"
-})
-
-SettingsTab:AddSection("Performance")
-
---// FPS BOOST
-
-SettingsTab:AddButton({
-    Title = "FPS Boost",
-    Description = "Boost FPS & Reduce Ping",
-    Callback = function()
-
-        local lighting = game:GetService("Lighting")
-
-        lighting.GlobalShadows = false
-        lighting.FogEnd = 9e9
-        lighting.Brightness = 0
-
-        settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
-
-        for i,v in pairs(game:GetDescendants()) do
-
-            if v:IsA("Part")
-            or v:IsA("Union")
-            or v:IsA("MeshPart") then
-
-                v.Material = Enum.Material.Plastic
-                v.Reflectance = 0
-
-            end
-
-            if v:IsA("Decal")
-            or v:IsA("Texture") then
-
-                v.Transparency = 1
-
-            end
-
-            if v:IsA("ParticleEmitter")
-            or v:IsA("Trail") then
-
-                v.Enabled = false
-
-            end
-
-        end
-
-    end
-})
-
---// ANTI LAG
-
-SettingsTab:AddButton({
-    Title = "Anti Lag",
-    Description = "Remove unnecessary effects",
-    Callback = function()
-
-        for _,v in pairs(game:GetDescendants()) do
-
-            if v:IsA("Explosion")
-            or v:IsA("Fire")
-            or v:IsA("Smoke")
-            or v:IsA("Sparkles") then
-
-                v:Destroy()
-
-            end
-
-        end
-
-    end
-})
-
---// LOW GRAPHICS
-
-SettingsTab:AddButton({
-    Title = "Low Graphics",
-    Description = "Dark & Smooth Graphics",
-    Callback = function()
-
-        local lighting = game:GetService("Lighting")
-
-        lighting.Brightness = 1
-        lighting.GlobalShadows = false
-        lighting.FogEnd = 500
-        lighting.OutdoorAmbient = Color3.fromRGB(80,80,80)
-
-        settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
-
-    end
-})
-
---// REMOVE TEXTURE
-
-SettingsTab:AddButton({
-    Title = "Remove Texture",
-    Description = "Delete all textures",
-    Callback = function()
-
-        for _,v in pairs(game:GetDescendants()) do
-
-            if v:IsA("Texture")
-            or v:IsA("Decal") then
-
-                v:Destroy()
-
-            end
-
-        end
-
-    end
-})
-
---// ANTI AFK (luôn để code này ở cuối) 
-
-local Players = game:GetService("Players")
-local VirtualUser = game:GetService("VirtualUser")
-
-Players.LocalPlayer.Idled:Connect(function()
-    VirtualUser:CaptureController()
-    VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
-    task.wait(1)
-    VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+--====================================================
+-- DRAG TOGGLE BUTTON
+--====================================================
+
+local dragging
+local dragInput
+local dragStart
+local startPos
+
+local function update(input)
+
+	local delta = input.Position - dragStart
+
+	ToggleButton.Position = UDim2.new(
+		startPos.X.Scale,
+		startPos.X.Offset + delta.X,
+		startPos.Y.Scale,
+		startPos.Y.Offset + delta.Y
+	)
+end
+
+ToggleButton.InputBegan:Connect(function(input)
+
+	if input.UserInputType == Enum.UserInputType.Touch
+	or input.UserInputType == Enum.UserInputType.MouseButton1 then
+
+		dragging = true
+		dragStart = input.Position
+		startPos = ToggleButton.Position
+
+		input.Changed:Connect(function()
+
+			if input.UserInputState == Enum.UserInputState.End then
+				dragging = false
+			end
+		end)
+	end
 end)
 
-Fluent:Notify({
-    Title = "PREMIUM IS COMING",
-    Content = "PREMIUM HUB Loaded",
-    Duration = 5
-})
+ToggleButton.InputChanged:Connect(function(input)
+
+	if input.UserInputType == Enum.UserInputType.Touch
+	or input.UserInputType == Enum.UserInputType.MouseMovement then
+
+		dragInput = input
+	end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+
+	if input == dragInput and dragging then
+		update(input)
+	end
+end)

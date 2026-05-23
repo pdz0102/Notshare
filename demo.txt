@@ -19,7 +19,7 @@ local Player = Players.LocalPlayer
 --====================================================
 
 pcall(function()
-	game.CoreGui.BananaMobileHub:Destroy()
+	game.CoreGui.PREMIUMhub:Destroy()
 end)
 
 --====================================================
@@ -27,7 +27,7 @@ end)
 --====================================================
 
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "BananaMobileHub"
+ScreenGui.Name = "PREMIUMhub"
 ScreenGui.Parent = game.CoreGui
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -55,8 +55,8 @@ ToggleStroke.Thickness = 2
 
 local Main = Instance.new("Frame")
 Main.Parent = ScreenGui
-Main.Size = UDim2.new(0,720,0,430)
-Main.Position = UDim2.new(0.5,-360,0.5,-215)
+Main.Size = UDim2.new(0,75,0,70)
+Main.Position = UDim2.new(0.5,125,0.14,0)
 Main.BackgroundColor3 = Color3.fromRGB(15,15,15)
 Main.BorderSizePixel = 0
 Main.Active = true
@@ -94,7 +94,7 @@ Title.TextColor3 = Color3.new(1,1,1)
 local Sidebar = Instance.new("Frame")
 Sidebar.Parent = Main
 Sidebar.Position = UDim2.new(0,10,0,60)
-Sidebar.Size = UDim2.new(0,180,1,-70)
+Sidebar.Size = UDim2.new(0.22,0,1,-70)
 
 Sidebar.BackgroundColor3 = Color3.fromRGB(20,20,20)
 Sidebar.BorderSizePixel = 0
@@ -304,7 +304,7 @@ local function CreateButton(parent, text, callback)
 	Button.Text = "Click"
 
 	Button.Font = Enum.Font.GothamBold
-	Button.TextSize = 20
+	Button.TextSize = 13
 	Button.TextColor3 = Color3.fromRGB(40,30,0)
 
 	Button.BorderSizePixel = 0
@@ -399,7 +399,7 @@ local function CreateSection(parent, title)
 
 	Header.Text = title
 	Header.Font = Enum.Font.GothamBold
-	Header.TextSize = 21
+	Header.TextSize = 9
 	Header.TextColor3 = Color3.new(1,1,1)
 
 	Instance.new("UICorner", Header).CornerRadius = UDim.new(0,10)
@@ -560,7 +560,7 @@ end)
 
 local Notify = Instance.new("Frame")
 Notify.Parent = ScreenGui
-Notify.Size = UDim2.new(0,650,0,170)
+Notify.Size = UDim2.new(0.45,0,0.22,0)
 Notify.Position = UDim2.new(0.5,-325,0,50)
 
 Notify.BackgroundColor3 = Color3.fromRGB(35,35,40)
@@ -652,7 +652,7 @@ ToggleButton.MouseButton1Click:Connect(function()
 		TweenService:Create(
 			ToggleButton,
 			TweenInfo.new(0.2),
-			{Size = UDim2.new(0,65,0,65)}
+			{Size = UDim2.new(0,50,0,50)}
 		):Play()
 
 	else

@@ -13,115 +13,6 @@ local InterfaceManager = loadstring(game:HttpGet(
     "https://raw.githubusercontent.com/NevaHub0/InterfaceManager/main/.lua"
 ))()
 
---====================================================
--- FLUENT TOGGLE BUTTON
---====================================================
-
-local CoreGui = game:GetService("CoreGui")
-
-local ToggleGui = Instance.new("ScreenGui")
-ToggleGui.Name = "FluentToggle"
-ToggleGui.ResetOnSpawn = false
-ToggleGui.Parent = CoreGui
-
-local Toggle = Instance.new("ImageButton")
-Toggle.Parent = ToggleGui
-
-Toggle.Size = UDim2.fromOffset(55,55)
-Toggle.Position = UDim2.new(0,15,0.5,-25)
-
-Toggle.BackgroundColor3 = Color3.fromRGB(20,20,20)
-Toggle.AutoButtonColor = false
-
-Toggle.Image = "rbxassetid://17342100635"
-
-Instance.new("UICorner",Toggle).CornerRadius = UDim.new(1,0)
-
-local Stroke = Instance.new("UIStroke")
-Stroke.Parent = Toggle
-
-Stroke.Thickness = 2
-Stroke.Color = Color3.fromRGB(60,120,255)
-
--- Fluent shadow
-local Shadow = Instance.new("ImageLabel")
-Shadow.Parent = Toggle
-
-Shadow.BackgroundTransparency = 1
-Shadow.AnchorPoint = Vector2.new(0.5,0.5)
-
-Shadow.Position = UDim2.new(0.5,0,0.5,0)
-Shadow.Size = UDim2.new(1,20,1,20)
-
-Shadow.Image = "rbxassetid://1316045217"
-Shadow.ImageTransparency = 0.6
-
-Shadow.ZIndex = 0
-Toggle.ZIndex = 2
-
--- DRAG MOBILE
-local UIS = game:GetService("UserInputService")
-
-local dragging
-local dragInput
-local dragStart
-local startPos
-
-local function Update(input)
-
-	local delta = input.Position - dragStart
-
-	Toggle.Position = UDim2.new(
-		startPos.X.Scale,
-		startPos.X.Offset + delta.X,
-		startPos.Y.Scale,
-		startPos.Y.Offset + delta.Y
-	)
-end
-
-Toggle.InputBegan:Connect(function(input)
-
-	if input.UserInputType == Enum.UserInputType.Touch
-	or input.UserInputType == Enum.UserInputType.MouseButton1 then
-
-		dragging = true
-		dragStart = input.Position
-		startPos = Toggle.Position
-
-		input.Changed:Connect(function()
-
-			if input.UserInputState == Enum.UserInputState.End then
-				dragging = false
-			end
-		end)
-	end
-end)
-
-Toggle.InputChanged:Connect(function(input)
-
-	if input.UserInputType == Enum.UserInputType.Touch
-	or input.UserInputType == Enum.UserInputType.MouseMovement then
-
-		dragInput = input
-	end
-end)
-
-UIS.InputChanged:Connect(function(input)
-
-	if input == dragInput and dragging then
-		Update(input)
-	end
-end)
-
--- TOGGLE
-local Open = true
-
-Toggle.MouseButton1Click:Connect(function()
-
-	Open = not Open
-
-	game:GetService("CoreGui").ScreenGui.Enabled = Open
-end)
 
 
 --====================================================
@@ -159,7 +50,7 @@ local Tabs = {
 
     Levi = Window:AddTab({
         Title = "Kaitun Levi",
-        Icon = "ship"
+        Icon = "shield"
     }),
 
     V4 = Window:AddTab({
@@ -168,7 +59,7 @@ local Tabs = {
     }),
 
     Misc = Window:AddTab({
-        Title = "Khác",
+        Title = "orthers",
         Icon = "settings"
     })
 }

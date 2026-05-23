@@ -14,55 +14,52 @@ local InterfaceManager = loadstring(game:HttpGet(
 ))()
 
 --====================================================
--- ROUND TOGGLE BUTTON
+-- FLUENT TOGGLE BUTTON
 --====================================================
 
 local CoreGui = game:GetService("CoreGui")
 
 local ToggleGui = Instance.new("ScreenGui")
-ToggleGui.Name = "WaterCatToggle"
+ToggleGui.Name = "FluentToggle"
+ToggleGui.ResetOnSpawn = false
 ToggleGui.Parent = CoreGui
 
 local Toggle = Instance.new("ImageButton")
 Toggle.Parent = ToggleGui
 
-Toggle.Size = UDim2.new(0,60,0,60)
-Toggle.Position = UDim2.new(0,15,0.5,-30)
+Toggle.Size = UDim2.fromOffset(55,55)
+Toggle.Position = UDim2.new(0,15,0.5,-25)
 
-Toggle.BackgroundTransparency = 1
+Toggle.BackgroundColor3 = Color3.fromRGB(20,20,20)
+Toggle.AutoButtonColor = false
 
--- ĐỔI IMAGE Ở ĐÂY
 Toggle.Image = "rbxassetid://17342100635"
 
--- BO TRÒN
-local Corner = Instance.new("UICorner")
-Corner.CornerRadius = UDim.new(1,0)
-Corner.Parent = Toggle
+Instance.new("UICorner",Toggle).CornerRadius = UDim.new(1,0)
 
--- STROKE
 local Stroke = Instance.new("UIStroke")
 Stroke.Parent = Toggle
 
 Stroke.Thickness = 2
-Stroke.Color = Color3.fromRGB(80,170,255)
+Stroke.Color = Color3.fromRGB(60,120,255)
 
--- SHADOW
+-- Fluent shadow
 local Shadow = Instance.new("ImageLabel")
 Shadow.Parent = Toggle
 
-Shadow.AnchorPoint = Vector2.new(0.5,0.5)
-Shadow.Position = UDim2.new(0.5,0,0.5,0)
-
-Shadow.Size = UDim2.new(1,18,1,18)
-
 Shadow.BackgroundTransparency = 1
-Shadow.Image = "rbxassetid://1316045217"
-Shadow.ImageTransparency = 0.55
-Shadow.ZIndex = 0
+Shadow.AnchorPoint = Vector2.new(0.5,0.5)
 
+Shadow.Position = UDim2.new(0.5,0,0.5,0)
+Shadow.Size = UDim2.new(1,20,1,20)
+
+Shadow.Image = "rbxassetid://1316045217"
+Shadow.ImageTransparency = 0.6
+
+Shadow.ZIndex = 0
 Toggle.ZIndex = 2
 
--- DRAG
+-- DRAG MOBILE
 local UIS = game:GetService("UserInputService")
 
 local dragging
@@ -70,7 +67,7 @@ local dragInput
 local dragStart
 local startPos
 
-local function update(input)
+local function Update(input)
 
 	local delta = input.Position - dragStart
 
@@ -84,8 +81,8 @@ end
 
 Toggle.InputBegan:Connect(function(input)
 
-	if input.UserInputType == Enum.UserInputType.MouseButton1
-	or input.UserInputType == Enum.UserInputType.Touch then
+	if input.UserInputType == Enum.UserInputType.Touch
+	or input.UserInputType == Enum.UserInputType.MouseButton1 then
 
 		dragging = true
 		dragStart = input.Position
@@ -102,8 +99,8 @@ end)
 
 Toggle.InputChanged:Connect(function(input)
 
-	if input.UserInputType == Enum.UserInputType.MouseMovement
-	or input.UserInputType == Enum.UserInputType.Touch then
+	if input.UserInputType == Enum.UserInputType.Touch
+	or input.UserInputType == Enum.UserInputType.MouseMovement then
 
 		dragInput = input
 	end
@@ -112,18 +109,18 @@ end)
 UIS.InputChanged:Connect(function(input)
 
 	if input == dragInput and dragging then
-		update(input)
+		Update(input)
 	end
 end)
 
--- TOGGLE GUI
+-- TOGGLE
 local Open = true
 
 Toggle.MouseButton1Click:Connect(function()
 
 	Open = not Open
 
-	Window.Root.Visible = Open
+	game:GetService("CoreGui").ScreenGui.Enabled = Open
 end)
 
 

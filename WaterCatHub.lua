@@ -1,7 +1,3 @@
--- ╔══════════════════════════════════════════╗
--- ║      Banana Cat Hub - Blox Fruit         ║
--- ║  Nút tròn trắng, đổi ảnh rbxassetid://  ║
--- ╚══════════════════════════════════════════╝
 
 local Players          = game:GetService("Players")
 local TweenService     = game:GetService("TweenService")
@@ -100,7 +96,7 @@ local TitleLbl = Instance.new("TextLabel")
 TitleLbl.Size               = UDim2.new(1, 0, 1, 0)
 TitleLbl.BackgroundTransparency = 1
 TitleLbl.RichText           = true
-TitleLbl.Text               = '<font color="#F5C542"><b>Banana Cat Hub</b></font>  <font color="#888899">- Blox Fruit</font>'
+TitleLbl.Text               = '<font color="#F5C542"><b>Water Cat Hub</b></font>  <font color="#888899">- Blox Fruit</font>'
 TitleLbl.TextSize           = 15
 TitleLbl.Font               = Enum.Font.Gotham
 TitleLbl.TextXAlignment     = Enum.TextXAlignment.Center
@@ -345,15 +341,13 @@ end
 --  NAV TABS
 -- ══════════════════════════════════════════
 local TABS = {
-    "Status And Server",
-    "LocalPlayer",
-    "Setting Farm",
-    "Hold and Select Skill",
-    "Farming",
-    "Stack Farming",
-    "Farming Other",
-    "Fruit and Raid, Dungeon",
-    "Sea Event",
+    "Main",
+    "Auto bounty",
+    "hop sever",
+    "kaitun v4",
+    "kaitun levi",
+    "kaitun",
+    "Orther",
 }
 
 local activeNavBtn = nil

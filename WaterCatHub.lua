@@ -396,42 +396,138 @@ for i, name in ipairs(TABS) do
     if name == "Farming Other" then SetActive(Btn, name) end
 end
 
--- ══════════════════════════════════════════
---  CONTENT: EVENT EASTER
--- ══════════════════════════════════════════
-MakeSection("Event Easter")
-
-MakeClickRow("Mở cửa hàng lễ Phục sinh", function()
-    print("[BananaCat] Mở shop Phục sinh")
-end)
 
 -- ══════════════════════════════════════════
---  CONTENT: EXECUTE SCRIPTS
+--  TAB DATA: mỗi tab có section + button riêng
+--  Chỉ cần sửa/thêm vào bảng TAB_DATA là xong
 -- ══════════════════════════════════════════
-MakeSection("Execute Scripts")
+local TAB_DATA = {
+    ["Main"] = {
+        { section = "Banana Cat Hub", buttons = {
+            { label = "Banana",       fn = function() game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer) end },
+            { label = "Maru",      fn = function() setclipboard(game.JobId) end },
+            { label = "Night",   fn = function() print("[BananaCat] Tìm server ít người") end },
+        }},
+    },
 
-MakeClickRow("Auto Farm Mastery", function()
-    print("[BananaCat] Auto Farm Mastery")
-end)
+    ["LocalPlayer"] = {
+        { section = "Player", buttons = {
+            { label = "Infinite Jump",       fn = function() print("[BananaCat] Infinite Jump ON") end },
+            { label = "Speed Hack x2",       fn = function() game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = 32 end },
+            { label = "Anti AFK",            fn = function() game:GetService("VirtualUser"):Button2Down(Vector2.new(0,0), CFrame.new()) end },
+        }},
+        { section = "Visual", buttons = {
+            { label = "Full Bright",         fn = function() game:GetService("Lighting").Brightness = 10 end },
+            { label = "ESP Players",         fn = function() print("[BananaCat] ESP ON") end },
+        }},
+    },
 
-MakeClickRow("Kill Aura", function()
-    print("[BananaCat] Kill Aura")
-end)
+    ["Setting Farm"] = {
+        { section = "Farm Config", buttons = {
+            { label = "Set Farm Range x2",   fn = function() print("[BananaCat] Farm Range x2") end },
+            { label = "Set Farm Range x5",   fn = function() print("[BananaCat] Farm Range x5") end },
+            { label = "Auto Select Skill",   fn = function() print("[BananaCat] Auto Skill ON") end },
+        }},
+    },
 
-MakeClickRow("Auto Raid", function()
-    -- TODO: script auto raid
-    print("[BananaCat] Auto Raid")
-end)
+    ["Hold and Select Skill"] = {
+        { section = "Skill Setup", buttons = {
+            { label = "Select Skill 1",      fn = function() print("[BananaCat] Skill 1 selected") end },
+            { label = "Select Skill 2",      fn = function() print("[BananaCat] Skill 2 selected") end },
+            { label = "Select Skill 3",      fn = function() print("[BananaCat] Skill 3 selected") end },
+            { label = "Hold All Skills",     fn = function() print("[BananaCat] Hold All") end },
+        }},
+    },
 
-MakeClickRow("Teleport to Boss", function()
-    -- TODO: script teleport boss
-    print("[BananaCat] Teleport to Boss")
-end)
+    ["Farming"] = {
+        { section = "Auto Farm", buttons = {
+            { label = "Auto Farm NPC",       fn = function() print("[BananaCat] Auto Farm NPC ON") end },
+            { label = "Auto Farm Boss",      fn = function() print("[BananaCat] Auto Farm Boss ON") end },
+            { label = "Farm Nearest Enemy",  fn = function() print("[BananaCat] Farm Nearest ON") end },
+        }},
+        { section = "Mastery", buttons = {
+            { label = "Auto Farm Mastery",   fn = function() print("[BananaCat] Farm Mastery ON") end },
+            { label = "Auto Farm Fruit Mastery", fn = function() print("[BananaCat] Fruit Mastery ON") end },
+        }},
+    },
 
-MakeClickRow("Auto Chest Farm", function()
-    -- TODO: script auto chest
-    print("[BananaCat] Auto Chest Farm")
-end)
+    ["Stack Farming"] = {
+        { section = "Stack", buttons = {
+            { label = "Stack Farm x3",       fn = function() print("[BananaCat] Stack x3") end },
+            { label = "Stack Farm x5",       fn = function() print("[BananaCat] Stack x5") end },
+            { label = "Stack Farm Max",      fn = function() print("[BananaCat] Stack Max") end },
+        }},
+    },
+
+    ["Farming Other"] = {
+        { section = "Event Easter", buttons = {
+            { label = "Mở cửa hàng lễ Phục sinh", fn = function() print("[BananaCat] Mở shop Phục sinh") end },
+        }},
+        { section = "Execute Scripts", buttons = {
+            { label = "Auto Farm Mastery",   fn = function() print("[BananaCat] Auto Farm Mastery") end },
+            { label = "Kill Aura",           fn = function() print("[BananaCat] Kill Aura") end },
+            { label = "Auto Raid",           fn = function() print("[BananaCat] Auto Raid") end },
+            { label = "Teleport to Boss",    fn = function() print("[BananaCat] Teleport Boss") end },
+            { label = "Auto Chest Farm",     fn = function() print("[BananaCat] Auto Chest") end },
+        }},
+    },
+
+    ["Fruit and Raid, Dungeon"] = {
+        { section = "Fruit", buttons = {
+            { label = "Auto Snap Fruit",     fn = function() print("[BananaCat] Auto Snap Fruit") end },
+            { label = "Notify Rare Fruit",   fn = function() print("[BananaCat] Notify Rare ON") end },
+        }},
+        { section = "Raid & Dungeon", buttons = {
+            { label = "Auto Raid",           fn = function() print("[BananaCat] Auto Raid ON") end },
+            { label = "Auto Dungeon",        fn = function() print("[BananaCat] Auto Dungeon ON") end },
+            { label = "Teleport to Portal",  fn = function() print("[BananaCat] TP Portal") end },
+        }},
+    },
+
+    ["Sea Event"] = {
+        { section = "Sea Events", buttons = {
+            { label = "Auto Sea Event",      fn = function() print("[BananaCat] Auto Sea Event ON") end },
+            { label = "Teleport to Ship",    fn = function() print("[BananaCat] TP Ship") end },
+            { label = "Kill Sea Boss",       fn = function() print("[BananaCat] Kill Sea Boss") end },
+        }},
+    },
+}
+
+-- ══════════════════════════════════════════
+--  HÀM RENDER TAB (1 hàm duy nhất cho tất cả)
+-- ══════════════════════════════════════════
+local function RenderTab(tabName)
+    -- Xóa content cũ
+    for _, child in ipairs(CScroll:GetChildren()) do
+        if child:IsA("Frame") then child:Destroy() end
+    end
+    rowOrder = 0
+
+    local data = TAB_DATA[tabName]
+    if not data then
+        -- Tab chưa có data
+        local Empty = Instance.new("TextLabel")
+        Empty.Size               = UDim2.new(1,0,0,60)
+        Empty.BackgroundTransparency = 1
+        Empty.Text               = "-- Chưa có nội dung cho tab này"
+        Empty.TextColor3         = Color3.fromRGB(80,80,100)
+        Empty.TextSize           = 13
+        Empty.Font               = Enum.Font.Code
+        Empty.LayoutOrder        = 1
+        Empty.Parent             = CScroll
+        return
+    end
+
+    for _, group in ipairs(data) do
+        MakeSection(group.section)
+        for _, btn in ipairs(group.buttons) do
+            MakeClickRow(btn.label, btn.fn)
+        end
+    end
+end
+
+-- Render tab mặc định
+RenderTab("Farming Other")
 
 -- ══════════════════════════════════════════
 --  DRAG TITLEBAR

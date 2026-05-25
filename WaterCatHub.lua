@@ -46,7 +46,7 @@ TCorner.Parent = ToggleBtn
 local TIcon = Instance.new("TextLabel")
 TIcon.Size               = UDim2.new(1, 0, 1, 0)
 TIcon.BackgroundTransparency = 1
-TIcon.Text               = IMAGE_OPEN == "rbxassetid://0" and "☰" or ""
+TIcon.Text               = IMAGE_OPEN == "rbxassetid://0"
 TIcon.TextColor3         = Color3.fromRGB(30, 30, 40)
 TIcon.TextSize           = 22
 TIcon.Font               = Enum.Font.GothamBold
@@ -402,7 +402,6 @@ end
 MakeSection("Event Easter")
 
 MakeClickRow("Mở cửa hàng lễ Phục sinh", function()
-    -- TODO: thêm script mở shop tại đây
     print("[BananaCat] Mở shop Phục sinh")
 end)
 
@@ -412,12 +411,10 @@ end)
 MakeSection("Execute Scripts")
 
 MakeClickRow("Auto Farm Mastery", function()
-    -- TODO: script auto farm mastery
     print("[BananaCat] Auto Farm Mastery")
 end)
 
 MakeClickRow("Kill Aura", function()
-    -- TODO: script kill aura
     print("[BananaCat] Kill Aura")
 end)
 
@@ -492,4 +489,4 @@ ToggleBtn.MouseButton1Click:Connect(function()
 end)
 
 UpdateToggleImage()
-print("✅ Banana Cat Hub loaded!")
+print("✅ Water Cat Hub loaded!")
